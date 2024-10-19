@@ -1,0 +1,4 @@
+[general]
+name = "boat"
+[graphics]
+icon = "boat.png"

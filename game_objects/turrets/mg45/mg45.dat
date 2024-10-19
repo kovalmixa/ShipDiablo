@@ -1,0 +1,5 @@
+[general]
+name = "mg45"
+[graphics]
+icon = "mg45_icon.png"
+texture = "mg45.png"

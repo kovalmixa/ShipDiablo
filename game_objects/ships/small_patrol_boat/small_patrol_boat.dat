@@ -1,0 +1,6 @@
+[general]
+name = "small patrol boat"
+slot_height = 3
+slot_width = 2
+[graphics]
+icon = "small_patrol_boat.png"
