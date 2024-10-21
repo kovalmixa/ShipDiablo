@@ -19,7 +19,7 @@ func _on_add_object_to_world(_obj):
 	if has_node("inventory_object"):
 		return
 	inventory_obj_init()
-	get_node("inventory_object").add_object(_obj.object.id, _obj.quantity)
+	get_node("inventory_object").add_object(_obj.object, _obj.quantity)
 	get_node("inventory_object").scale = Vector2(5,5)
 	var sprite = get_node("inventory_object").get_node("Sprite2D")
 	sprite.offset -= Vector2(0, sprite.texture.get_height() / 4)
@@ -70,6 +70,7 @@ func place_the_hull():
 	hull_equip_slot.add_object_to_slot(0, 0, get_node("inventory_object").object)
 	get_node("inventory_object").add_object(get_node("inventory_object").object.id, -1)
 	if get_node("inventory_object").object.id == "":
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_node("inventory_object").free()
 	
 func take_the_hull():

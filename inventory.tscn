@@ -5,6 +5,7 @@
 [ext_resource type="Script" path="res://Inventory_grid.gd" id="3_ot5b8"]
 
 [node name="Inventory" type="CanvasLayer"]
+visible = false
 script = ExtResource("1_s7kyp")
 
 [node name="ship_slots_equip_hull" type="Node2D" parent="."]
@@ -14,22 +15,11 @@ type = "hull"
 width = 4.0
 height = 8.0
 
-[node name="ship_slots_equip_weapon" type="Node2D" parent="."]
-position = Vector2(750, 170)
-script = ExtResource("2_yl175")
-type = "turret"
-array_width = 4
-width = 1.15
-height = 1.15
-
 [node name="Inventory_grid" type="Node2D" parent="."]
 position = Vector2(972, 240)
 script = ExtResource("3_ot5b8")
 array_width = 8
 array_height = 8
 
-[node name="ship_slots_equip_weapon2" type="Node2D" parent="."]
-position = Vector2(750, 250)
-script = ExtResource("2_yl175")
-type = "turret"
-array_width = 4
+[node name="weapons" type="Node2D" parent="."]
+position = Vector2(700, 170)

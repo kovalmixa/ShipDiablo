@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvdqr2x3i886n"]
+
+[ext_resource type="Script" path="res://ship_slots_equip.gd" id="1_0x64h"]
+
+[node name="weapon_grid" type="Node2D"]
+script = ExtResource("1_0x64h")
+width = 1.25
+height = 1.25

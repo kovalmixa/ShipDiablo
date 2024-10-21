@@ -96,9 +96,9 @@ func mouse_click(event: InputEvent) -> void:
 				select_inventory_slot(i, j, quantity)
 			elif selection && event.button_index == MOUSE_BUTTON_RIGHT:
 				if Inventory.has_node("selected_slot"):
-					if can_add_to_slot(i, j, Inventory.get_node("selected_slot").object.id):
-						add_object_to_slot(i, j, Inventory.get_node("selected_slot").object.id, 1)
-						Inventory.get_node("selected_slot").add_object(Inventory.get_node("selected_slot").object.id, -1)
+					if can_add_to_slot(i, j, Inventory.get_node("selected_slot").object):
+						add_object_to_slot(i, j, Inventory.get_node("selected_slot").object, 1)
+						Inventory.get_node("selected_slot").add_object(Inventory.get_node("selected_slot").object, -1)
 						if Inventory.get_node("selected_slot").quantity == 0:
 							Inventory.get_node("selected_slot").free()
 							Inventory.selection = false
@@ -114,8 +114,9 @@ func left_click(_i, _j):
 	if selection:
 		select_inventory_slot(_i, _j, quantity)
 	elif Inventory.has_node("selected_slot"):
-		if can_add_to_slot(_i, _j, Inventory.get_node("selected_slot").object.id):
-			add_object_to_slot(_i, _j, Inventory.get_node("selected_slot").object.id, Inventory.get_node("selected_slot").quantity)
+		if can_add_to_slot(_i, _j, Inventory.get_node("selected_slot").object):
+			var selected_slot = Inventory.get_node("selected_slot")
+			add_object_to_slot(_i, _j, selected_slot.object, selected_slot.quantity)
 			Inventory.get_node("selected_slot").free()
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
@@ -160,11 +161,8 @@ func _process(delta: float) -> void:
 	if selection && Inventory.has_node("selected_slot"):
 		var mouse_position = get_viewport().get_mouse_position()
 		var object_size = Inventory.get_node("selected_slot").object.size
-		var x = (object_size.x - 1) * ((slot_size.x - 20) / 2)
-		var y = (object_size.y - 1) * ((slot_size.y - 20) / 2)
-		var offset = Vector2(slot_size.x * object_size.x / 2, slot_size.y * object_size.y / 2)
-		Inventory.get_node("selected_slot").position = mouse_position - Vector2(x, y)
-		Inventory.get_node("selected_slot").get_node("Label").position = mouse_position - Vector2(x - offset.x, y - offset.y)
+		Inventory.get_node("selected_slot").position = mouse_position
+		Inventory.get_node("selected_slot").get_node("Label").position = mouse_position + slot_size / 2 
 	if selection == false && last_selection_state != selection:
 		var grid_coordinates = get_viewport().get_mouse_position() - array_top_corner
 		for i in range (array_height):

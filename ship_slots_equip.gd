@@ -38,6 +38,7 @@ func mouse_click(event: InputEvent) -> void:
 						if object.id == selected_slot.object.id:
 							if selected_slot.quantity == 1:
 								Inventory.selection = false
+								Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 							selected_slot.add_object(object, -1)
 				else:
 					if get_node(slot).object.id != "":

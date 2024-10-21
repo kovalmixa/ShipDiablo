@@ -2,3 +2,6 @@
 name = "boat"
 [graphics]
 icon = "boat.png"
+[weapon_0]
+type = "turret"
+size = "s"

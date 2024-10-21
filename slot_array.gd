@@ -128,12 +128,9 @@ func add_object_to_slot(_i, _j, _string, _quantity):
 	var slot = get_node("slot_%d_%d" % [_i, _j])
 	var size : Vector2
 	if typeof(_string) == TYPE_OBJECT:
-		size = check_size(_string.id)
+		size = _string.size
 	else:
 		size = check_size(_string)
-	if slot.is_sub_slot:
-		_i = slot.i
-		_j = slot.j
 	for i in range (_i, _i + size.y):
 		for j in range (_j, _j + size.x):
 			var sub_slot = get_node("slot_%d_%d" % [i, j])
@@ -156,16 +153,26 @@ func add_object_to_slot(_i, _j, _string, _quantity):
 			sub_slot.add_object(_string, _quantity)
 	
 func can_add_to_slot(_i, _j, _string):
-	if _string == "":
-		return false
-	var size = check_size(_string)
-	if _j + size.x > array_width - 1 || _i + size.y > array_height - 1:
+	if typeof(_string) == TYPE_STRING:
+		if _string == "":
+			return false
+	var size :Vector2
+	if typeof(_string) == TYPE_OBJECT:
+		size = _string.size
+	else:
+		size = check_size(_string)
+	if _j + size.x > array_width || _i + size.y > array_height:
 		return false
 	for i in range (_i, _i + size.y):
 		for j in range (_j, _j + size.x):
 			var sub_slot = "slot_%d_%d" % [i, j]
 			if get_node(sub_slot).object.id != "":
-				if get_node(sub_slot).object.id  != _string:
+				var id : String
+				if typeof(_string) == TYPE_OBJECT:
+					id = _string.id
+				else:
+					id = _string
+				if get_node(sub_slot).object.id  != id:
 					return false
 	return true
 	
@@ -177,3 +184,8 @@ func check_size(_string):
 func get_object(_i, _j):
 	var slot = get_node("slot_%d_%d" % [_i, _j])
 	return slot.object
+
+func destr():
+	var children = get_children()
+	for child in children:
+		child.free()
