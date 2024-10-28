@@ -132,6 +132,7 @@ func select_inventory_slot(_i, _j, _quantity):
 		var size = get_node(slot).object.size
 		var selected_slot = object_scene.instantiate()
 		selected_slot.name = "selected_slot"
+		selected_slot.slot_size = slot_size
 		selected_slot.is_selection_slot = true
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		Inventory.add_child(selected_slot)
@@ -153,17 +154,16 @@ func _on_inventory_opened():
 func _on_inventory_closed():
 	is_visible = false
 
-func _process(delta: float) -> void:
+func slot_selection_proc():
 	var selection = Inventory.selection
 	if !Inventory.visible:
 		return
-	var last_texture_size
 	if selection && Inventory.has_node("selected_slot"):
+		var selected_slot = Inventory.get_node("selected_slot")
 		var mouse_position = get_viewport().get_mouse_position()
-		var object_size = Inventory.get_node("selected_slot").object.size
-		Inventory.get_node("selected_slot").position = mouse_position
-		Inventory.get_node("selected_slot").get_node("Quantity").position = mouse_position + slot_size / 2 
-	if selection == false && last_selection_state != selection:
+		selected_slot.position = mouse_position
+		selected_slot.slot_object_appereance(mouse_position)
+	elif last_selection_state != selection:
 		var grid_coordinates = get_viewport().get_mouse_position() - array_top_corner
 		for i in range (array_height):
 			for j in range (array_width):
@@ -171,3 +171,6 @@ func _process(delta: float) -> void:
 					continue
 				get_node("base%d_%d" % [i, j]).disable_shader()
 	last_selection_state = selection
+
+func _process(delta: float) -> void:
+	slot_selection_proc()
