@@ -8,7 +8,13 @@ script = ExtResource("1_36mkw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
-[node name="Label" type="Label" parent="."]
+[node name="Size" type="Label" parent="."]
+top_level = true
+offset_left = -20.0
+offset_right = 7.0
+offset_bottom = 23.0
+
+[node name="Quantity" type="Label" parent="."]
 top_level = true
 offset_right = 27.0
 offset_bottom = 23.0

@@ -39,7 +39,8 @@ func clone():
 	new_object.dir = dir
 	new_object.icon = icon
 	new_object.texture = texture
-	new_object.weapons_list = weapons_list
+	for i in range (weapons_list.size()):
+		new_object.weapons_list.append(weapons_list[i])
 	return new_object
 	
 func read(_path : String) -> void:

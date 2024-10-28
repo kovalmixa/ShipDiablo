@@ -39,6 +39,8 @@ func update_slot_weapons():
 	var weapon_grid_load = load("res://weapon_grid.tscn")
 	var last_type = ""
 	var children = weapons.get_children()
+	if hull.weapons_list.size() == 0:
+		print(hull.name)
 	for child in children:
 		child.destr()
 		child.free()

@@ -162,7 +162,7 @@ func _process(delta: float) -> void:
 		var mouse_position = get_viewport().get_mouse_position()
 		var object_size = Inventory.get_node("selected_slot").object.size
 		Inventory.get_node("selected_slot").position = mouse_position
-		Inventory.get_node("selected_slot").get_node("Label").position = mouse_position + slot_size / 2 
+		Inventory.get_node("selected_slot").get_node("Quantity").position = mouse_position + slot_size / 2 
 	if selection == false && last_selection_state != selection:
 		var grid_coordinates = get_viewport().get_mouse_position() - array_top_corner
 		for i in range (array_height):

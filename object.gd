@@ -19,12 +19,15 @@ var slot_texture_scale : Vector2
 var array : NodePath
 
 func _ready() -> void:
-	$Label.position = position
-	$Label.scale = Vector2(0.5, 0.5) 
+	var children = get_children()
+	for child in children:
+		if child is Label:
+			child.position = position
+			child.scale = Vector2(0.5, 0.5)
 	object = CommonObject.new()
 	quantity = 0
 	load_spite_position = $Sprite2D.position
-	load_label_position = $Label.position
+	load_label_position = $Quantity.position
 
 func _is_zero(_quantity):
 	if quantity == 0:
@@ -60,10 +63,10 @@ func default_slot():
 func  object_changed():
 	if object.id == "" || is_sub_slot:
 		$Sprite2D.texture = null
-		$Label.text = ""
+		$Quantity.text = ""
 		if object.id == "":
 			$Sprite2D.position = load_spite_position
-			$Label.position = load_label_position
+			$Quantity.position = load_label_position
 	else:
 		var size = object.size
 		$Sprite2D.position.x = load_spite_position.x + (size.x - 1) * (slot_size.x) / 2
@@ -86,11 +89,12 @@ func  object_changed():
 		else:
 			var texture_height = $Sprite2D.texture.get_height()
 			$Sprite2D.scale = Vector2(0.9, 0.9) * (float(slot_size.y + padding) / float(texture_height)) * size.y
-			$Label.position.x = load_label_position.x + (size.x - 1) * (slot_size.y) / 2
-			$Label.position.y = load_label_position.y + (size.y - 1) * (slot_size.y) + padding / size.y / 2 
-			$Label.position.x += (slot_size.x + padding) / 6
+			$Quantity.position.x = load_label_position.x + (size.x - 1) * (slot_size.y) / 2
+			$Quantity.position.y = load_label_position.y + (size.y - 1) * (slot_size.y) + padding / size.y / 2 
+			$Quantity.position.x += (slot_size.x + padding) / 6
 		slot_texture_scale = $Sprite2D.scale
 		if quantity > 1:
-			$Label.text = "%d" % quantity
+			$Quantity.text = "%d" % quantity
 		else:
-			$Label.text = ""
+			$Quantity.text = ""
+		$Size.text = object.size_type

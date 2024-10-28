@@ -108,8 +108,8 @@ func _process(delta: float) -> void:
 		var texture_scale = Vector2(texture_width, texture_height)
 		var texture_size = texture_scale * 6
 		var object_size = get_node("inventory_object").object.size
-		$inventory_object/Label.add_theme_font_size_override("font_size", 50 / zoom.x)
-		$inventory_object/Label.position = mouse_position + texture_scale
+		$inventory_object/Quantity.add_theme_font_size_override("font_size", 50 / zoom.x)
+		$inventory_object/Quantity.position = mouse_position + texture_scale
 		if is_on_hull_area:
 			$inventory_object/Sprite2D.self_modulate = Color(0, 1, 0)
 			get_node("inventory_object").position.x = Player.position.x

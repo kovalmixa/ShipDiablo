@@ -9,3 +9,6 @@ size = "m"
 [weapon_1]
 type = "turret"
 size = "s"
+[weapon_2]
+type = "torpedo"
+size = "s"
