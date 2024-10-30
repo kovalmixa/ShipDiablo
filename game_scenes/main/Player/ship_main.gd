@@ -36,7 +36,7 @@ func _on_object_changed(_obj, _slot_type):
 func update_slot_weapons():
 	var weapons = Inventory.get_node("weapons")
 	var i: int = 0
-	var weapon_grid_load = load("res://weapon_grid.tscn")
+	var weapon_grid_load = load("res://game_scenes/inventory/weapon_grid.tscn")
 	var last_type = ""
 	var children = weapons.get_children()
 	if hull.weapons_list.size() == 0:

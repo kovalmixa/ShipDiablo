@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://dk1o3w1mtsde1"]
+
+[ext_resource type="Script" path="res://game_scenes/inventory/Inventory.gd" id="1_q7eyw"]
+[ext_resource type="Script" path="res://game_scenes/inventory/ship_slots_equip.gd" id="2_vw1to"]
+[ext_resource type="Script" path="res://game_scenes/inventory/Inventory_grid.gd" id="3_65fq6"]
+
+[node name="Inventory" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_q7eyw")
+
+[node name="ship_slots_equip_hull" type="Node2D" parent="."]
+position = Vector2(400, 300)
+script = ExtResource("2_vw1to")
+type = "hull"
+width = 4.0
+height = 8.0
+
+[node name="Inventory_grid" type="Node2D" parent="."]
+position = Vector2(972, 240)
+script = ExtResource("3_65fq6")
+array_width = 8
+array_height = 8
+
+[node name="weapons" type="Node2D" parent="."]
+position = Vector2(700, 170)

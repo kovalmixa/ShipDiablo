@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cpm6w77uvpe20"]
+
+[ext_resource type="Script" path="res://game_scenes/game_UI/game_UI.gd" id="1_8im5w"]
+[ext_resource type="Script" path="res://game_scenes/game_UI/ability_list.gd" id="2_xtooa"]
+[ext_resource type="Script" path="res://game_scenes/game_UI/ability_mouse.gd" id="3_g6yya"]
+
+[node name="Game_UI" type="CanvasLayer"]
+script = ExtResource("1_8im5w")
+
+[node name="ability_list" type="Node2D" parent="."]
+position = Vector2(550, 610)
+scale = Vector2(1.5, 1.5)
+script = ExtResource("2_xtooa")
+array_width = 10
+
+[node name="ability_mouse" type="Node2D" parent="."]
+position = Vector2(765, 610)
+scale = Vector2(1.5, 1.5)
+script = ExtResource("3_g6yya")
+array_width = 2

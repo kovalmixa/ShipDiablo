@@ -8,8 +8,8 @@ class_name slot_array
 @export var width :float = 1
 @export var height :float = 1
 
-var base_scene = load("res://base.tscn")
-var object_scene = load("res://object.tscn")
+var base_scene = load("res://game_scenes/object/base.tscn")
+var object_scene = load("res://game_scenes/object/object.tscn")
 var slot_scale : Vector2
 var label = Label.new()
 var player_position = Vector2(0, 0)

@@ -3,7 +3,7 @@ extends Sprite2D
 var shader
 
 func _ready():
-	shader = load("res://base.gdshader")
+	shader = load("res://game_scenes/object/base.gdshader")
 	material = null
 
 func enable_shader():

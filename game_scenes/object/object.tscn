@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://bpwhle8kam5tg"]
 
-[ext_resource type="Script" path="res://object.gd" id="1_36mkw"]
+[ext_resource type="Script" path="res://game_scenes/object/object.gd" id="1_4ueo7"]
 
 [node name="object" type="Node2D"]
 top_level = true
-script = ExtResource("1_36mkw")
+script = ExtResource("1_4ueo7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

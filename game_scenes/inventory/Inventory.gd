@@ -6,7 +6,6 @@ signal add_object_to_world(_obj)
 signal remove_object_from_world()
 
 var selection = false
-var object_scene = load("res://object.tscn")
 var is_on_inventory_UI = false
 var on_slot_array = ""
 var children

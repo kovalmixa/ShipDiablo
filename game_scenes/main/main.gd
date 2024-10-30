@@ -3,6 +3,7 @@ extends Node2D
 var is_on_hull_area = false
 
 @onready var Player = $Player
+var object_scene = load("res://game_scenes/object/object.tscn")
 
 func _ready():
 	Inventory.add_object_to_world.connect(_on_add_object_to_world)
@@ -10,7 +11,7 @@ func _ready():
 	Inventory.inventory_closed.connect(_on_inventory_closed)
 		
 func inventory_obj_init():
-	var inventory_object = Inventory.object_scene.instantiate()
+	var inventory_object = object_scene.instantiate()
 	inventory_object.name = "inventory_object"
 	inventory_object.is_inventory_object = true
 	add_child(inventory_object)
@@ -29,7 +30,7 @@ func _on_add_object_to_world(_obj):
 func _on_remove_object_from_world(_slot_array):
 	if !has_node("inventory_object"):
 		return
-	var selected_slot = Inventory.object_scene.instantiate()
+	var selected_slot = object_scene.instantiate()
 	selected_slot.name = "selected_slot"
 	selected_slot.slot_size = Vector2(34, 34)
 	selected_slot.is_selection_slot = true
