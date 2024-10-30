@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfkrc3t83fkkd"]
+[gd_scene load_steps=2 format=3 uid="uid://cfkrc3t83fkkd"]
 
 [ext_resource type="Script" path="res://game_scenes/object/base.gd" id="1_cvk73"]
-[ext_resource type="Texture2D" uid="uid://cvp4k2ef2f12m" path="res://textures/slot.png" id="1_lsjjc"]
 
 [node name="base" type="Sprite2D"]
-texture = ExtResource("1_lsjjc")
 script = ExtResource("1_cvk73")

@@ -132,7 +132,7 @@ func select_inventory_slot(_i, _j, _quantity):
 		var size = get_node(slot).object.size
 		var selected_slot = object_scene.instantiate()
 		selected_slot.name = "selected_slot"
-		selected_slot.slot_size = slot_size
+		selected_slot.slot_size = Vector2(34, 34)
 		selected_slot.is_selection_slot = true
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		Inventory.add_child(selected_slot)

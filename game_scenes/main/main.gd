@@ -103,21 +103,22 @@ func _process(delta: float) -> void:
 	var mouse_position = get_viewport().get_mouse_position() / zoom - padding / zoom + $Player.position 
 	is_on_hull_area = _is_on_hull_area(mouse_position)
 	if has_node("inventory_object"):
-		get_node("inventory_object").position = mouse_position
+		var inventory_object = get_node("inventory_object")
+		inventory_object.position = mouse_position
 		var texture_width = $inventory_object/Sprite2D.texture.get_width() /  6
 		var texture_height = $inventory_object/Sprite2D.texture.get_height() / 6
 		var texture_scale = Vector2(texture_width, texture_height)
 		var texture_size = texture_scale * 6
-		var object_size = get_node("inventory_object").object.size
+		var object_size =inventory_object.object.size
 		$inventory_object/Quantity.add_theme_font_size_override("font_size", 50 / zoom.x)
 		$inventory_object/Quantity.position = mouse_position + texture_scale
-		if is_on_hull_area:
+		if is_on_hull_area && Player.hull.id != inventory_object.object.id:
 			$inventory_object/Sprite2D.self_modulate = Color(0, 1, 0)
-			get_node("inventory_object").position.x = Player.position.x
-			get_node("inventory_object").position.y = Player.position.y + texture_size.y / 2
-			get_node("inventory_object").rotation = Player.rotation
+			inventory_object.position.x = Player.position.x
+			inventory_object.position.y = Player.position.y + texture_size.y
+			inventory_object.rotation = Player.rotation
 		else:
 			$inventory_object/Sprite2D.self_modulate = Color(1, 0, 0)
-			get_node("inventory_object").position.x = mouse_position.x
-			get_node("inventory_object").position.y = mouse_position.y + texture_size.y / 2
-			get_node("inventory_object").rotation = 0
+			inventory_object.position.x = mouse_position.x
+			inventory_object.position.y = mouse_position.y + texture_size.y / 2
+			inventory_object.rotation = 0

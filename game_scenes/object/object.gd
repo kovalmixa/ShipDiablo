@@ -63,7 +63,10 @@ func default_slot():
 func slot_object_appereance(_position):
 	var size = object.size
 	var texture_height = $Sprite2D.texture.get_height()
-	$Sprite2D.scale = Vector2(0.9, 0.9) * (float(slot_size.y + padding) / float(texture_height)) * size.y
+	if _scale.y > 1:
+		$Sprite2D.scale = Vector2(0.9, 0.9) * (float(slot_size.y / _scale.y + padding) / float(texture_height)) * size.y
+	else:
+		$Sprite2D.scale = Vector2(0.9, 0.9) * (float(slot_size.y + padding) / float(texture_height)) * size.y
 	$Quantity.position.x = _position.x + (size.x - 1) * (slot_size.y) / 2
 	$Quantity.position.x += (slot_size.x + padding) / 6
 	$Quantity.position.y = _position.y + (size.y - 1) * (slot_size.y) 

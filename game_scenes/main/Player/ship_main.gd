@@ -54,6 +54,7 @@ func update_slot_weapons():
 			weapon_grid.position.x = weapons.position.x
 			weapon_grid.type = last_type
 			weapon_grid.array_width = count_slots(last_type)
+			weapon_grid.is_visible = true
 			weapons.add_child(weapon_grid)
 		i += 1
 

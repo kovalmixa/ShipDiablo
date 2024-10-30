@@ -7,6 +7,7 @@ class_name slot_array
 @export var array_height = 1 
 @export var width :float = 1
 @export var height :float = 1
+@export var slot_texture = "res://textures/slot.png"
 
 var base_scene = load("res://game_scenes/object/base.tscn")
 var object_scene = load("res://game_scenes/object/object.tscn")
@@ -46,6 +47,7 @@ func draw_grid():
 			slot_base.name = "base%d_%d" % [i, j]
 			slot_base.scale = slot_scale
 			slot_base.top_level = true
+			slot_base.texture = ResourceLoader.load(slot_texture)
 			add_child(slot_base)
 
 func draw_objects():
