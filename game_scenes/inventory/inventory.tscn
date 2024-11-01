@@ -15,11 +15,11 @@ type = "hull"
 width = 4.0
 height = 8.0
 
+[node name="weapons" type="Node2D" parent="."]
+position = Vector2(700, 170)
+
 [node name="Inventory_grid" type="Node2D" parent="."]
 position = Vector2(972, 240)
 script = ExtResource("3_65fq6")
 array_width = 8
 array_height = 8
-
-[node name="weapons" type="Node2D" parent="."]
-position = Vector2(700, 170)

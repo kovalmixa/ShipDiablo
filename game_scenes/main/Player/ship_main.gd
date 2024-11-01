@@ -44,7 +44,7 @@ func update_slot_weapons():
 	for child in children:
 		child.destr()
 		child.free()
-		
+	var j: int = 0
 	while i < hull.weapons_list.size():
 		if hull.weapons_list[i].type != last_type:
 			last_type = hull.weapons_list[i].type
@@ -53,10 +53,16 @@ func update_slot_weapons():
 			weapon_grid.position.y = weapons.position.y + i * 40 
 			weapon_grid.position.x = weapons.position.x
 			weapon_grid.type = last_type
-			weapon_grid.array_width = count_slots(last_type)
+			weapon_grid.array_width =  count_slots(last_type)
 			weapon_grid.is_visible = true
 			weapons.add_child(weapon_grid)
+			j = 0
+		var weapon_grid = weapons.get_node(last_type)
+		var slot = "slot_%d_%d" % [0, j]
+		weapon_grid.get_node(slot).slot_object_size = hull.weapons_list[i].size
+		weapon_grid.get_node(slot).object_changed()
 		i += 1
+		j += 1
 
 func count_slots(_last_type):
 	var i = 0

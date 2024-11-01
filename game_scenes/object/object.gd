@@ -11,6 +11,7 @@ var is_sub_slot = false
 var is_selection_slot = false
 var is_inventory_object = false
 var is_equipment_slot = false
+var slot_object_size = ""
 var slot_size : Vector2
 var _scale : Vector2
 var load_spite_position : Vector2
@@ -68,18 +69,32 @@ func slot_object_appereance(_position):
 	else:
 		$Sprite2D.scale = Vector2(0.9, 0.9) * (float(slot_size.y + padding) / float(texture_height)) * size.y
 	$Quantity.position.x = _position.x + (size.x - 1) * (slot_size.y) / 2
-	$Quantity.position.x += (slot_size.x + padding) / 6
+	if size.x > 1:
+		$Quantity.position.x += (slot_size.x - padding)
+	else:
+		$Quantity.position.x += (slot_size.x + padding) / 6
 	$Quantity.position.y = _position.y + (size.y - 1) * (slot_size.y) 
 	$Quantity.position.y += padding / size.y / 2 
+	$Quantity.add_theme_font_size_override("font_size", (slot_size.y / (slot_size.y / 34) - padding) / 1.5)
 	
 	$Size.position.x = _position.x - (slot_size.x + padding) / 4
-	$Size.position.y = _position.y + (size.y - 1) * (slot_size.y) + padding / size.y / 2 
+	$Size.position.y = _position.y + (size.y - 1) * (slot_size.y) + padding / size.y / 2
+	$Size.add_theme_font_size_override("font_size", slot_size.y / (slot_size.y / 34) - padding)
+	if _scale.y > 1:
+		$Size.add_theme_font_size_override("font_size", slot_size.y / (slot_size.y / 34))
 	
 func  object_changed():
 	if object.id == "" || is_sub_slot:
 		$Sprite2D.texture = null
 		$Quantity.text = ""
-		$Size.text = ""
+		if is_equipment_slot:
+			var size = object.size
+			$Size.position.x = load_label_position.x - (slot_size.x + padding) / 4
+			$Size.position.y = load_label_position.y + (size.y - 1) * (slot_size.y) + padding / size.y / 2 
+			$Size.text = slot_object_size
+			$Size.add_theme_font_size_override("font_size", slot_size.y / (slot_size.y / 34))
+		else:
+			$Size.text = ""
 		if object.id == "":
 			$Sprite2D.position = load_spite_position
 			$Quantity.position = load_label_position

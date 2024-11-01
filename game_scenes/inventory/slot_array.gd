@@ -20,6 +20,7 @@ var	array_top_corner
 var array_low_corner
 var is_on_array_grid
 var is_visible = false
+var is_grid_cleaned = false
 
 var viewport_position =  Vector2(0,0)
 var last_viewport_position = Vector2(0,0)
@@ -88,10 +89,12 @@ func mouse_viewport():
 				enable_slot_shaders(i, j, size)
 			show_item_info(i, j, mouse_position)
 			last_viewport_position = Vector2(i, j)
-		else:
+			is_grid_cleaned = false
+		elif !is_grid_cleaned:
 			if has_node("item_info"):
 				remove_child(get_node("item_info"))
 			disable_slot_shaders(last_viewport_position.y, last_viewport_position.x, size)
+			is_grid_cleaned = true
 		last_viewport_position = viewport_position
 		
 func enable_slot_shaders(_i, _j, _size):

@@ -5,6 +5,7 @@ class_name Inventory_type
 var last_selection_state = false
 var last_viewport_position2 = Vector2(0,0)
 
+
 func _ready() -> void:
 	super()
 	Inventory.inventory_opened.connect(_on_inventory_opened)
@@ -33,7 +34,8 @@ func mouse_viewport():
 					enable_slot_shaders(i, j, size)
 			show_item_info(i, j, mouse_position)
 			last_viewport_position = Vector2(i, j)
-		else:
+			is_grid_cleaned = false
+		elif !is_grid_cleaned:
 			var slot = "slot_%d_%d" % [viewport_position.y, viewport_position.x]
 			var size = get_node(slot).object.size
 			disable_slot_shaders(last_viewport_position.y, last_viewport_position.x, size)
@@ -43,6 +45,7 @@ func mouse_viewport():
 				last_viewport_position = Vector2(0,0)
 			else:
 				last_viewport_position = Vector2(1,1)
+			is_grid_cleaned = true
 		last_viewport_position = viewport_position
 
 func enable_slot_shaders(_i, _j, _size):
@@ -138,6 +141,7 @@ func select_inventory_slot(_i, _j, _quantity):
 		Inventory.add_child(selected_slot)
 		Inventory.get_node("selected_slot").add_object(get_node(slot).object, floor(get_node(slot).quantity * _quantity))
 		add_object_to_slot(_i, _j, get_node(slot).object, -floor(get_node(slot).quantity * _quantity))
+		
 		disable_slot_shaders(_i, _j, size)
 			
 func add_to_inventory(_string, _quantity):

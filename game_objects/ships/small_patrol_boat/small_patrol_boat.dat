@@ -1,14 +1,15 @@
 [general]
 name = "small patrol boat"
-slot_height = 2
+slot_height = 4
+slot_width = 2
 [graphics]
 icon = "small_patrol_boat.png"
 [weapon_0]
 type = "turret"
-size = "m"
+size = "S"
 [weapon_1]
 type = "turret"
 size = "s"
 [weapon_2]
 type = "torpedo"
-size = "s"
+size = "XXXL"
