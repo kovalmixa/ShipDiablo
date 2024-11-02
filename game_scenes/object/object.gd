@@ -62,7 +62,12 @@ func default_slot():
 	object_changed()
 	
 func slot_object_appereance(_position):
-	var size = object.size
+	var size : Vector2
+	if is_equipment_slot:
+		size = Vector2(1,1)
+		$Sprite2D.position = load_spite_position
+	else:
+		size = object.size
 	var texture_height = $Sprite2D.texture.get_height()
 	if _scale.y > 1:
 		$Sprite2D.scale = Vector2(0.9, 0.9) * (float(slot_size.y / _scale.y + padding) / float(texture_height)) * size.y

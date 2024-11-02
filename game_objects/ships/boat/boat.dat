@@ -5,3 +5,5 @@ icon = "boat.png"
 [weapon_0]
 type = "turret"
 size = "s"
+x = 0
+y = 5

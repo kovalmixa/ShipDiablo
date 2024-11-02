@@ -5,7 +5,6 @@ class_name Inventory_type
 var last_selection_state = false
 var last_viewport_position2 = Vector2(0,0)
 
-
 func _ready() -> void:
 	super()
 	Inventory.inventory_opened.connect(_on_inventory_opened)
@@ -36,9 +35,11 @@ func mouse_viewport():
 			last_viewport_position = Vector2(i, j)
 			is_grid_cleaned = false
 		elif !is_grid_cleaned:
+			disable_slot_shaders(0, 0, Vector2(array_width, array_height))
 			var slot = "slot_%d_%d" % [viewport_position.y, viewport_position.x]
 			var size = get_node(slot).object.size
-			disable_slot_shaders(last_viewport_position.y, last_viewport_position.x, size)
+			if !selection:
+				disable_slot_shaders(last_viewport_position.y, last_viewport_position.x, size)
 			if has_node("item_info"):
 				remove_child(get_node("item_info"))
 			if last_viewport_position != Vector2(0,0):
@@ -141,14 +142,21 @@ func select_inventory_slot(_i, _j, _quantity):
 		Inventory.add_child(selected_slot)
 		Inventory.get_node("selected_slot").add_object(get_node(slot).object, floor(get_node(slot).quantity * _quantity))
 		add_object_to_slot(_i, _j, get_node(slot).object, -floor(get_node(slot).quantity * _quantity))
-		
 		disable_slot_shaders(_i, _j, size)
 			
-func add_to_inventory(_string, _quantity):
-	var size = check_size(_string)
+func add_to_inventory(_string, _quantity = 1):
+	var size
+	if typeof(_string) == TYPE_STRING:
+		if _string == "":
+			return
+		size = check_size(_string)
+	else:
+		if _string.id == "":
+			return
+		size = _string.size
 	for i in range (array_width - size.y + 1):
 		for j in range (array_height - size.x + 1):
-			if  can_add_to_slot(i, j, _string):
+			if can_add_to_slot(i, j, _string):
 				add_object_to_slot(i, j, _string, _quantity)
 				return
 				

@@ -1,8 +1,6 @@
 [general]
 name = "mg45"
-slot_height = 2
-slot_width = 2
-size_type = "XXXL"
+size_type = "s"
 [graphics]
 icon = "mg45_icon.png"
 texture = "mg45.png"

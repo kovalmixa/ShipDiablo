@@ -1,6 +1,6 @@
 extends Inventory_type
 
-signal object_changed(_obj, _slot_type)
+signal object_changed(_j, _obj, _slot_type)
 
 var main
 var player
@@ -32,6 +32,8 @@ func mouse_click(event: InputEvent) -> void:
 					var selected_slot = Inventory.get_node("selected_slot")
 					if selected_slot.object.type != type:
 						return
+					if selected_slot.object.size_type != get_node(slot).slot_object_size:
+						return
 					if get_node(slot).object.id == "" || get_node(slot).object.id != selected_slot.object.id:
 						var object = selected_slot.object
 						add_object_to_slot(i, j, object)
@@ -44,7 +46,6 @@ func mouse_click(event: InputEvent) -> void:
 					if get_node(slot).object.id != "":
 						Inventory.selection = true
 						select_inventory_slot(i, j, 1)
-						object_changed.emit(null, type)
 	
 func add_object_to_slot(_i, _j, _object, _quantity = 1):
 	var selection = Inventory.selection
@@ -53,14 +54,14 @@ func add_object_to_slot(_i, _j, _object, _quantity = 1):
 		get_node(slot).add_object(_object, _quantity)
 		if get_node(slot).object.id == "":
 			_object = null
-		object_changed.emit(_object, type)
+		object_changed.emit(_j, _object, type)
 	elif selection && get_node(slot).object.id  != _object.id:
 		var selected_slot = Inventory.get_node("selected_slot")
 		if selected_slot.quantity == 1:
 			var temp_obj = selected_slot.object.clone()
 			selected_slot.add_object(get_node(slot).object)
 			get_node(slot).add_object(temp_obj)
-			object_changed.emit(temp_obj, type)
+			object_changed.emit(_j, temp_obj, type)
 	else:
 		return
 		

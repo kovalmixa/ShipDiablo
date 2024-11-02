@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqx2yr2vywn2b"]
+[gd_scene load_steps=6 format=3 uid="uid://dqx2yr2vywn2b"]
 
 [ext_resource type="Script" path="res://game_scenes/main/Player/Player.gd" id="1_esiaf"]
-[ext_resource type="Texture2D" uid="uid://ckqrd68y666mk" path="res://game_objects/ships/boat/boat.png" id="2_x3byg"]
 [ext_resource type="Script" path="res://game_scenes/main/Player/Camera2D.gd" id="3_d4cra"]
 [ext_resource type="Script" path="res://game_scenes/main/Player/ParallaxLayer.gd" id="4_en1g8"]
 [ext_resource type="Texture2D" uid="uid://cpypf0a2je3dy" path="res://textures/white_pixel.png" id="5_10f8u"]
@@ -15,9 +14,6 @@ script = ExtResource("1_esiaf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_ryrhp")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_x3byg")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_speed = 10.0
@@ -34,3 +30,5 @@ script = ExtResource("4_en1g8")
 modulate = Color(0.00784314, 0.941176, 0.992157, 1)
 scale = Vector2(256, 256)
 texture = ExtResource("5_10f8u")
+
+[node name="Ship" type="Node2D" parent="."]

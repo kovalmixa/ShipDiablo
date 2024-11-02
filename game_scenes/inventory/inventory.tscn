@@ -12,13 +12,13 @@ script = ExtResource("1_q7eyw")
 position = Vector2(400, 300)
 script = ExtResource("2_vw1to")
 type = "hull"
-width = 4.0
+width = 3.0
 height = 8.0
 
 [node name="weapons" type="Node2D" parent="."]
 position = Vector2(700, 170)
 
-[node name="Inventory_grid" type="Node2D" parent="."]
+[node name="inventory_grid" type="Node2D" parent="."]
 position = Vector2(972, 240)
 script = ExtResource("3_65fq6")
 array_width = 8

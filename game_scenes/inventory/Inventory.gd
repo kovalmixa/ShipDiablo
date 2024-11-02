@@ -15,7 +15,7 @@ func _ready():
 	inventory_closed.connect(_on_inventory_closed)
 	children = get_children()
 	
-	var Inventory_grid = get_node("Inventory_grid")
+	var Inventory_grid = get_node("inventory_grid")
 	Inventory_grid.add_to_inventory("t_mg45", 12)
 	Inventory_grid.add_to_inventory("sh_small_patrol_boat", 12)
  
