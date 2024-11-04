@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
-class_name Ship
+class_name ShipClass
 
-var turret_scene = load("res://game_scenes/object/turret.tscn")
+var weapon_scene = load("res://game_scenes/object/weapon.tscn")
 
 @export var max_speed = 300
 @export var speed = 0.0
@@ -44,37 +44,6 @@ func load_ship_textures():
 		$CollisionShape2D.shape.height = sprite2.texture.get_height()
 		$CollisionShape2D.shape.radius = sprite2.texture.get_width()
 
-func add_turret(_j, _obj):
-	for i in range (hull.texture_index):
-		var hull_sprite_name = "hull_sprite_%d" % i
-		var hull_sprite = $Ship.get_node(hull_sprite_name)
-		var turret = "turret_%d" % _j
-		if !hull_sprite.has_node(turret):
-			continue
-		if hull_sprite.get_node(turret).type == _obj.type:
-			hull_sprite.get_node(turret).add_turret(_obj)
-	
-func remove_turret(_j):
-	for i in range (hull.texture_index):
-		var hull_sprite_name = "hull_sprite_%d" % i
-		var hull_sprite = $Ship.get_node(hull_sprite_name)
-		var turret = "turret_%d" % _j
-		if !hull_sprite.has_node(turret):
-			continue
-		hull_sprite.get_node(turret).default()
-
-func _on_object_changed(_j, _obj, _slot_type):
-	if _slot_type == "hull":
-		if !_obj:
-			add_hull("sh_boat")
-		else:
-			add_hull(_obj)
-	elif _slot_type == "turret":
-		if !_obj:
-			remove_turret(_j)
-		else:
-			add_turret(_j, _obj)
-
 func update_slot_weapons():
 	var weapons = Inventory.get_node("weapons")
 	var i: int = 0
@@ -88,7 +57,7 @@ func update_slot_weapons():
 			inventory_grid.add_to_inventory(slot.object)
 		child.destr()
 		child.free()
-	var j: int = 0
+	var slot_quantity = count_all_slots()
 	while i < hull.weapons_list.size():
 		if hull.weapons_list[i].type != last_type:
 			last_type = hull.weapons_list[i].type
@@ -97,34 +66,50 @@ func update_slot_weapons():
 			weapon_grid.position.y = weapons.position.y + i * 40 
 			weapon_grid.position.x = weapons.position.x
 			weapon_grid.type = last_type
-			weapon_grid.array_width =  count_slots(last_type)
+			weapon_grid.array_width =  count_type_slots(last_type)
 			weapon_grid.is_visible = true
 			weapons.add_child(weapon_grid)
-			j = 0
 		var weapon_grid = weapons.get_node(last_type)
-		var slot = "slot_%d_%d" % [0, j]
-		weapon_grid.get_node(slot).slot_object_size = hull.weapons_list[i].size
-		weapon_grid.get_node(slot).object_changed()
-		var turret = turret_scene.instantiate()
+		var weapon = weapon_scene.instantiate()
 		var x = hull.weapons_list[i].x
 		var y = hull.weapons_list[i].y
-		turret.position = Vector2(x, -y)
-		turret.name = "turret_%d" % i
-		turret.type = last_type
+		weapon.position = Vector2(x, -y)
+		weapon.name = "weapon_%d" % i
+		weapon.type = last_type
 		var hull_sprite_name = "hull_sprite_%d" % hull.weapons_list[i].floor
 		var hull_sprite = $Ship.get_node(hull_sprite_name)
-		hull_sprite.add_child(turret)
+		hull_sprite.add_child(weapon)
+		var slot = "slot_%d_%d" % [0, hull.weapons_list[i].slot]
+		weapon_grid.get_node(slot).slot_object_size = hull.weapons_list[i].size
+		weapon_grid.get_node(slot).object_changed()
+		weapon_grid.object_changed.connect(hull_sprite.get_node("weapon_%d" % i).add_weapon)
 		i += 1
-		j += 1
 
-func count_slots(_last_type):
+func count_type_slots(_last_type):
 	var i = 0
 	var quantity = 0
+	while i < hull.weapons_list.size() && hull.weapons_list[i].type == _last_type:
+		quantity = hull.weapons_list[i].slot
+		i += 1
+	return quantity + 1
+
+func count_all_slots():
+	var quantity = 0
+	var i = 0
+	var last_type = ""
 	while i < hull.weapons_list.size():
-		if _last_type == hull.weapons_list[i].type:
-			quantity += 1
+		if last_type != hull.weapons_list[i].type:
+			quantity += count_type_slots("")
+		last_type = hull.weapons_list[i].type
 		i += 1
 	return quantity
+
+func _on_object_changed(_j, _obj, _slot_type):
+	if _slot_type == "hull":
+		if !_obj:
+			add_hull("sh_boat")
+		else:
+			add_hull(_obj)
 
 func movement(delta):
 	var target_speed = speed_level * -max_speed / 3

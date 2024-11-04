@@ -1,4 +1,4 @@
-extends Ship
+extends ShipClass
 
 func _ready():
 	super()

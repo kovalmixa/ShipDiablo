@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://deogyvp7jhb61"]
+
+[ext_resource type="Script" path="res://game_scenes/object/weapon.gd" id="1_7wnmv"]
+
+[node name="Weapon" type="Node2D"]
+script = ExtResource("1_7wnmv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

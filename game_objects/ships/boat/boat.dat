@@ -4,6 +4,7 @@ name = "boat"
 icon = "boat.png"
 [weapon_0]
 type = "turret"
+slot = 0
 size = "s"
 x = 0
 y = 5

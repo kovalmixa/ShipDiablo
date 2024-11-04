@@ -16,6 +16,7 @@ var weapons_list :Array
 
 class Weapon:
 	var type :String
+	var slot :int
 	var size :String
 	var x :int
 	var y :int
@@ -83,6 +84,7 @@ func read(_path : String) -> void:
 		var section_name = "weapon_%d" % i
 		var weapon = Weapon.new()
 		weapon.type = file.get_value(section_name, "type", "")
+		weapon.slot = file.get_value(section_name, "slot", 0)
 		weapon.size = file.get_value(section_name, "size")
 		weapon.x = file.get_value(section_name, "x")
 		weapon.y = file.get_value(section_name, "y")

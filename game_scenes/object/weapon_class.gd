@@ -1,5 +1,5 @@
 extends CommonObject
 
-class_name Turret
+class_name WeaponObj
 
 var object = get_parent()

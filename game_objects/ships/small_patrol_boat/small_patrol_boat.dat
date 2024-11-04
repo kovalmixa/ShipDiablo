@@ -5,16 +5,19 @@ slot_height = 2
 icon = "small_patrol_boat.png"
 [weapon_0]
 type = "turret"
+slot = 0
 size = "s"
 x = -10
 y = 10
 [weapon_1]
 type = "turret"
+slot = 0
 size = "s"
 x = 10
 y = 10
 [weapon_2]
 type = "torpedo"
+slot = 0
 size = "XXXL"
 x = 0
 y = 0
