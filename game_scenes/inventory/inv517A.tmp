@@ -12,9 +12,12 @@ script = ExtResource("1_q7eyw")
 position = Vector2(400, 300)
 script = ExtResource("2_vw1to")
 type = "hull"
-WIDTH = 3.0
-HEIGHT = 8.0
-OBJECT = "HullObject"
+array_width = null
+array_height = null
+width = 3.0
+height = 8.0
+slot_texture = null
+object = "HullObject"
 
 [node name="weapons" type="Node2D" parent="."]
 position = Vector2(700, 170)
@@ -22,5 +25,3 @@ position = Vector2(700, 170)
 [node name="inventory_grid" type="Node2D" parent="."]
 position = Vector2(972, 240)
 script = ExtResource("3_65fq6")
-ARRAY_WIDTH = 8
-ARRAY_HEIGHT = 8

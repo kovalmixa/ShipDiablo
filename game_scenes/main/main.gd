@@ -14,6 +14,7 @@ func inventory_obj_init():
 	var inventory_object = object_scene.instantiate()
 	inventory_object.name = "inventory_object"
 	inventory_object.is_inventory_object = true
+	inventory_object.object = CommonObject.new()
 	add_child(inventory_object)
 		
 func _on_add_object_to_world(_obj):

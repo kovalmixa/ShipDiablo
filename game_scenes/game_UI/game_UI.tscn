@@ -11,10 +11,10 @@ script = ExtResource("1_8im5w")
 position = Vector2(550, 610)
 scale = Vector2(1.5, 1.5)
 script = ExtResource("2_xtooa")
-array_width = 10
+ARRAY_WIDTH = 10
 
 [node name="ability_mouse" type="Node2D" parent="."]
 position = Vector2(765, 610)
 scale = Vector2(1.5, 1.5)
 script = ExtResource("3_g6yya")
-array_width = 2
+ARRAY_WIDTH = 2

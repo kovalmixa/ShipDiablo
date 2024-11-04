@@ -2,7 +2,7 @@ extends Node2D
 
 @export var padding = 10
 
-var object :CommonObject
+var object
 
 var quantity : int
 var i : int
@@ -25,7 +25,6 @@ func _ready() -> void:
 		if child is Label:
 			child.position = position
 			child.scale = Vector2(0.5, 0.5)
-	object = CommonObject.new()
 	quantity = 0
 	load_spite_position = $Sprite2D.position
 	load_label_position = $Quantity.position

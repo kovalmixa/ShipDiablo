@@ -13,7 +13,7 @@ var weapon_scene = load("res://game_scenes/object/weapon.tscn")
 var hull
 
 func _ready() -> void:
-	hull = Hull.new()
+	hull = HullObject.new()
 
 func add_hull(_obj):
 	destr()
@@ -52,7 +52,7 @@ func update_slot_weapons():
 	var children = weapons.get_children()
 	var inventory_grid = Inventory.get_node("inventory_grid")
 	for child in children:
-		for j in range(0, child.array_width):
+		for j in range(0, child.ARRAY_WIDTH):
 			var slot = child.get_node("slot_%d_%d" % [0, j])
 			inventory_grid.add_to_inventory(slot.object)
 		child.destr()
@@ -65,8 +65,11 @@ func update_slot_weapons():
 			weapon_grid.name = last_type
 			weapon_grid.position.y = weapons.position.y + i * 40 
 			weapon_grid.position.x = weapons.position.x
+			weapon_grid.WIDTH = 1.6
+			weapon_grid.HEIGHT = 1.6
 			weapon_grid.type = last_type
-			weapon_grid.array_width =  count_type_slots(last_type)
+			weapon_grid.ARRAY_WIDTH = count_type_slots(last_type)
+			weapon_grid.OBJECT = "WeaponObject"
 			weapon_grid.is_visible = true
 			weapons.add_child(weapon_grid)
 		var weapon_grid = weapons.get_node(last_type)

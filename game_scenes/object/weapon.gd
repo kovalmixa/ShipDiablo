@@ -4,7 +4,7 @@ var type : String
 var weapon
 
 func _ready() -> void:
-	weapon = WeaponObj.new()
+	weapon = WeaponObject.new()
 
 func add_weapon(_j, _obj, _slot_type):
 	if _obj:

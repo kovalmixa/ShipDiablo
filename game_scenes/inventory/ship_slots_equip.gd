@@ -15,8 +15,8 @@ func _ready() -> void:
 	
 func draw_objects() -> void:
 	super()
-	for i in range (array_height):
-		for j in range (array_width):
+	for i in range (ARRAY_HEIGHT):
+		for j in range (ARRAY_WIDTH):
 			var slot = get_node("slot_%d_%d" % [i, j])
 			slot.is_equipment_slot = true
 		
@@ -48,14 +48,20 @@ func mouse_click(event: InputEvent) -> void:
 						select_inventory_slot(i, j, 1)
 	
 func add_object_to_slot(_i, _j, _object, _quantity = 1):
+	var object
+	if OBJECT == "HullObject":
+		object = HullObject.new()
+	elif OBJECT == "WeaponObject":
+		object = WeaponObject.new()
+	object.parse_id(_object.id)
 	var selection = Inventory.selection
 	var slot = "slot_%d_%d" % [_i, _j]
-	if (get_node(slot).object.id == _object.id)  || get_node(slot).object.id  == "":
-		get_node(slot).add_object(_object, _quantity)
+	if (get_node(slot).object.id == object.id)  || get_node(slot).object.id  == "":
+		get_node(slot).add_object(object, _quantity)
 		if get_node(slot).object.id == "":
-			_object = null
-		object_changed.emit(_j, _object, type)
-	elif selection && get_node(slot).object.id  != _object.id:
+			object = null
+		object_changed.emit(_j, object, type)
+	elif selection && get_node(slot).object.id  != object.id:
 		var selected_slot = Inventory.get_node("selected_slot")
 		if selected_slot.quantity == 1:
 			var temp_obj = selected_slot.object.clone()

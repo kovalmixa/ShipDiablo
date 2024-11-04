@@ -19,7 +19,7 @@ func mouse_viewport():
 			var i = int((mouse_position.y - array_top_corner.y) / slot_size.y)
 			var j = int((mouse_position.x - array_top_corner.x) / slot_size.x)
 			viewport_position = Vector2(j, i)
-			if array_width == 1 && array_height == 1:
+			if ARRAY_WIDTH == 1 && ARRAY_HEIGHT == 1:
 				get_node("base%d_%d" % [i, j]).enable_shader()
 			elif last_viewport_position.y != i || last_viewport_position.x != j:
 				if selection && Inventory.has_node("selected_slot"):
@@ -35,7 +35,7 @@ func mouse_viewport():
 			last_viewport_position = Vector2(i, j)
 			is_grid_cleaned = false
 		elif !is_grid_cleaned:
-			disable_slot_shaders(0, 0, Vector2(array_width, array_height))
+			disable_slot_shaders(0, 0, Vector2(ARRAY_WIDTH, ARRAY_HEIGHT))
 			var slot = "slot_%d_%d" % [viewport_position.y, viewport_position.x]
 			var size = get_node(slot).object.size
 			if !selection:
@@ -59,7 +59,7 @@ func enable_slot_shaders(_i, _j, _size):
 		_size = get_node(slot).object.size
 	for i in range (_i, _i + _size.y):
 		for j in range (_j, _j + _size.x):
-			if i < array_height && j < array_width && i >= 0 && j >= 0:
+			if i < ARRAY_HEIGHT && j < ARRAY_WIDTH && i >= 0 && j >= 0:
 				get_node("base%d_%d" % [i, j]).enable_shader()
 				
 func disable_slot_shaders(_i, _j, _size):
@@ -72,7 +72,7 @@ func disable_slot_shaders(_i, _j, _size):
 		_size = get_node(slot).object.size
 	for i in range (_i, _i + _size.y):
 		for j in range (_j, _j + _size.x):
-			if i < array_height && j < array_width && i >= 0 && j >= 0:
+			if i < ARRAY_HEIGHT && j < ARRAY_WIDTH && i >= 0 && j >= 0:
 				get_node("base%d_%d" % [i, j]).disable_shader()
 
 func mouse_click(event: InputEvent) -> void:
@@ -154,8 +154,8 @@ func add_to_inventory(_string, _quantity = 1):
 		if _string.id == "":
 			return
 		size = _string.size
-	for i in range (array_width - size.y + 1):
-		for j in range (array_height - size.x + 1):
+	for i in range (ARRAY_WIDTH - size.y + 1):
+		for j in range (ARRAY_HEIGHT - size.x + 1):
 			if can_add_to_slot(i, j, _string):
 				add_object_to_slot(i, j, _string, _quantity)
 				return
@@ -177,8 +177,8 @@ func slot_selection_proc():
 		selected_slot.slot_object_appereance(mouse_position)
 	elif last_selection_state != selection:
 		var grid_coordinates = get_viewport().get_mouse_position() - array_top_corner
-		for i in range (array_height):
-			for j in range (array_width):
+		for i in range (ARRAY_HEIGHT):
+			for j in range (ARRAY_WIDTH):
 				if int(grid_coordinates.y / slot_size.y) == i && int(grid_coordinates.x / slot_size.x) == j:
 					continue
 				get_node("base%d_%d" % [i, j]).disable_shader()
