@@ -8,3 +8,4 @@ slot = 0
 size = "s"
 x = 0
 y = 5
+sector = -90,90

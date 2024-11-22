@@ -11,6 +11,7 @@ class Weapon:
 	var x :int
 	var y :int
 	var floor :int
+	var sector : Array
 var object = get_parent()
 
 var has_any_turrets : bool
@@ -52,5 +53,18 @@ func read(_path : String) -> void:
 		weapon.x = file.get_value(section_name, "x")
 		weapon.y = file.get_value(section_name, "y")
 		weapon.floor = file.get_value(section_name, "floor", 0)
+		var sector_str = file.get_value(section_name, "sector", "0,360")
+		#var sector_str_index = sector_str.count(";") + 1
+		#for j in range(sector_str_index):
+		#	var index = sector_str.fin(";")
+		#	var x_t = sector_t
+		#	var sector_t = Vector2()
+		#	if index != -1:
+		#		texture_name = texture_str.substr(0, index)
+		#	else:
+		#		texture_name = texture_str
+		#	textures[i] += "/%s" % texture_name
+		#	weapon.sector.append(sector_t)
+		
 		weapons_list.append(weapon) 
 		i += 1

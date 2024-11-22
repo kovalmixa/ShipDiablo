@@ -2,8 +2,8 @@ extends CharacterBody2D
 
 class_name ShipClass
 
-signal attack_sig(_mouse_position)
-
+signal attack_sig(_target_position)
+signal rotate_weapon(_target_position, _rotation)
 var weapon_scene = load("res://game_scenes/object/weapon.tscn")
 
 @export var max_speed = 300
@@ -80,7 +80,8 @@ func update_slot_weapons():
 		var y = hull.weapons_list[i].y
 		weapon.position = Vector2(x, -y)
 		weapon.name = "weapon_%d" % i
-		attack_sig.connect(weapon.shoot)
+		attack_sig.connect(weapon._on_shoot)
+		rotate_weapon.connect(weapon._on_rotate)
 		weapon.type = last_type
 		var hull_sprite_name = "hull_sprite_%d" % hull.weapons_list[i].floor
 		var hull_sprite = $Ship.get_node(hull_sprite_name)
@@ -127,8 +128,11 @@ func movement(delta):
 	velocity =  transform.y * speed
 	move_and_slide()
 
-func attack(_mouse_position):
-	attack_sig.emit(_mouse_position)
+func attack(_target_position):
+	attack_sig.emit(_target_position)
+
+func weapon_rotation(_target_position):
+	rotate_weapon.emit(_target_position)
 
 func _physics_process(delta):
 	movement(delta)

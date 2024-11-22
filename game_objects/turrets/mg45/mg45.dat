@@ -2,5 +2,9 @@
 name = "mg45"
 size_type = "s"
 [graphics]
+offset_x = 0
+offset_y = -5
 icon = "mg45_icon.png"
 texture = "mg45.png"
+[rotation]
+rotation_speed = 10

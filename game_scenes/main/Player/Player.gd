@@ -19,11 +19,11 @@ func attack_control(event):
 	if event is InputEventMouseButton:
 		if !Inventory.is_on_inventory_UI && event.pressed:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				attack(get_viewport().get_mouse_position())
+				attack(get_global_mouse_position())
 		
 func _input(event: InputEvent) -> void:
 	movement_control()
 	attack_control(event)
 
 func _process(delta: float) -> void:
-	pass
+	weapon_rotation(get_global_mouse_position())
