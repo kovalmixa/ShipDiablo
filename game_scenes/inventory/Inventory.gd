@@ -20,14 +20,13 @@ func _ready():
 	Inventory_grid.add_to_inventory("sh_small_patrol_boat", 12)
  
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("inventory"):
+	if event is InputEventKey && event.pressed && event.keycode == KEY_I:
 		if !visible:
 			inventory_opened.emit()
 		else:
 			inventory_closed.emit()
-	if visible && event is InputEventKey && event.pressed:
-		if event.keycode == KEY_ESCAPE:
-			inventory_closed.emit()
+	if visible && event is InputEventKey && event.pressed && event.keycode == KEY_ESCAPE:
+		inventory_closed.emit()
 			
 func _on_inventory_opened():
 	show()
@@ -42,6 +41,13 @@ func _on_inventory_closed():
 
 func _is_on_inventory_UI():
 	for child in children:
+		if child == $weapons:
+			for child2 in child.get_children():
+				if child2 is Inventory_type:
+					if child2.is_on_array_grid:
+						is_on_inventory_UI = true
+						on_slot_array = child2.name
+						return
 		if child is Inventory_type:
 			if child.is_on_array_grid:
 				is_on_inventory_UI = true

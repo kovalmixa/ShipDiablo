@@ -13,3 +13,7 @@ func add_weapon(_j, _obj, _slot_type):
 	else:
 		weapon._init()
 		$Sprite2D.texture = null
+
+func shoot(_mouse_position):
+	if weapon.id != "":
+		print(name, _mouse_position)

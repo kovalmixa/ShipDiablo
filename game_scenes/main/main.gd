@@ -79,7 +79,7 @@ func take_the_hull():
 	if !Inventory.visible || Player.hull.id == "sh_boat":
 		return
 	if has_node("inventory_object") && get_node("inventory_object").object.id == Player.hull.id:
-		get_node("inventory_object").add_object(get_node("inventory_object").object)
+		#get_node("inventory_object").add_object(get_node("inventory_object").object)
 		var hull_equip_slot = Inventory.get_node("ship_slots_equip_hull")
 		hull_equip_slot.add_object_to_slot(0, 0, get_node("inventory_object").object, -1)
 	elif !has_node("inventory_object"):
@@ -90,13 +90,16 @@ func take_the_hull():
 		sprite.offset -= Vector2(0, sprite.texture.get_height() / 4)
 		var hull_equip_slot = Inventory.get_node("ship_slots_equip_hull")
 		hull_equip_slot.add_object_to_slot(0, 0, Player.hull.get_object(), -1)
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		
 		
 func _on_inventory_closed():
 	if has_node("inventory_object"):
-		var Inventory_grid = Inventory.get_node("Inventory_grid")
+		var inventory_grid = Inventory.get_node("inventory_grid")
 		var inventory_object = get_node("inventory_object")
-		Inventory_grid.add_to_inventory(inventory_object.object.id, inventory_object.quantity)
+		inventory_grid.add_to_inventory(inventory_object.object.id, inventory_object.quantity)
 		inventory_object.free()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 func _process(delta: float) -> void:
 	var padding = Vector2(get_viewport().size.x / 2 , get_viewport().size.y / 2)
@@ -116,7 +119,7 @@ func _process(delta: float) -> void:
 		if is_on_hull_area && Player.hull.id != inventory_object.object.id:
 			$inventory_object/Sprite2D.self_modulate = Color(0, 1, 0)
 			inventory_object.position.x = Player.position.x
-			inventory_object.position.y = Player.position.y + texture_size.y
+			inventory_object.position.y = Player.position.y
 			inventory_object.rotation = Player.rotation
 		else:
 			$inventory_object/Sprite2D.self_modulate = Color(1, 0, 0)
