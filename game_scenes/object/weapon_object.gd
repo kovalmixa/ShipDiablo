@@ -3,8 +3,21 @@ extends CommonObject
 class_name WeaponObject
 
 var object = get_parent()
-var offset : Vector2
-var rotation_speed : float
+
+var offset: Vector2
+
+var rotation_speed: float
+
+var weapon_list: Array
+
+class Projectile:
+	var texture: String
+	var life_time: float
+	var speed: int
+class Weapon:
+	var x: int
+	var y: int
+	var projectile: Projectile
 
 func clone():
 	var new_object = WeaponObject.new()
@@ -15,14 +28,15 @@ func clone():
 	new_object.size = size
 	new_object.dir = dir
 	new_object.icon = icon
-	new_object.texture_index = texture_index
 	for i in range (textures.size()):
 		new_object.textures.append(textures[i])
 	new_object.offset = offset
 	new_object.rotation_speed = rotation_speed
+	for weapon in weapon_list:
+		new_object.weapon_list.append(weapon)
 	return new_object
 
-func read(_path : String) -> void:
+func read(_path: String) -> void:
 	var file = ConfigFile.new()
 	var error = file.load(_path + ".dat")
 	if error != OK:
@@ -33,4 +47,19 @@ func read(_path : String) -> void:
 	var offset_y = file.get_value("graphics", "offset_y", 0)
 	offset = Vector2(offset_x, offset_y)
 	rotation_speed = file.get_value("rotation", "rotation_speed", 0)
-	
+	var i: int = 0
+	while file.has_section("weapon_%d" % i):
+		var section = "weapon_%d" % i
+		var weapon = Weapon.new()
+		weapon.x = file.get_value(section, "x", 0)
+		weapon.y = file.get_value(section, "y", 0)
+		var projectile_type = file.get_value(section, "projectile")
+		var projectile = Projectile.new()
+		var projectile_dir = "res://game_objects/projectiles/"
+		var projectile_texture_name = file.get_value(projectile_type, "texture")
+		projectile.texture = projectile_dir + "%s" % projectile_texture_name
+		projectile.life_time = file.get_value(projectile_type, "life_time")
+		projectile.speed = file.get_value(projectile_type, "speed")
+		weapon.projectile = projectile
+		weapon_list.append(weapon)
+		i += 1

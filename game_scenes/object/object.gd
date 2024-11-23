@@ -51,7 +51,6 @@ func add_object(_string, _quantity = 1):
 	if _is_zero(quantity):
 		return
 	object.parse_id(_string)
-	
 	object_changed()
 
 func default_slot():

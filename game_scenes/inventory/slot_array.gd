@@ -9,8 +9,8 @@ class_name slot_array
 @export var SLOT_TEXTURE = "res://textures/slot.png"
 @export var OBJECT = "CommonObject"
 
-var base_scene = load("res://game_scenes/object/base.tscn")
-var object_scene = load("res://game_scenes/object/object.tscn")
+const base_scene = preload("res://game_scenes/object/base.tscn")
+const object_scene = preload("res://game_scenes/object/object.tscn")
 var slot_scale : Vector2
 var label = Label.new()
 var player_position = Vector2(0, 0)
@@ -27,8 +27,8 @@ var last_viewport_position = Vector2(0,0)
 
 func _ready():
 	slot_scale = Vector2(WIDTH, HEIGHT)
-	slot_size.x = load("res://textures/slot.png").get_width() * slot_scale.x
-	slot_size.y = load("res://textures/slot.png").get_height() * slot_scale.y
+	slot_size.x = preload("res://textures/slot.png").get_width() * slot_scale.x
+	slot_size.y = preload("res://textures/slot.png").get_height() * slot_scale.y
 	grid_size.x = slot_size.x * ARRAY_WIDTH
 	grid_size.y = slot_size.y * ARRAY_HEIGHT
 	var half_grid = Vector2(grid_size.x / 2, grid_size.y / 2)

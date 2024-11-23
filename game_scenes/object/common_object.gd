@@ -2,15 +2,14 @@ extends Node
 
 class_name CommonObject
 
-var id : String
-var type : String
-var size_type : String
-var size : Vector2
+var id: String
+var type: String
+var size_type: String
+var size: Vector2
 
-var dir : String
-var icon : String
-var textures :Array
-var texture_index : int
+var dir: String
+var icon: String
+var textures: Array
 
 func _init()-> void:
 	id = ""
@@ -21,7 +20,6 @@ func _init()-> void:
 	dir = ""
 	icon = ""
 	textures.clear()
-	texture_index = 0
 	
 func clone():
 	var new_object = CommonObject.new()
@@ -32,7 +30,6 @@ func clone():
 	new_object.size = size
 	new_object.dir = dir
 	new_object.icon = icon
-	new_object.texture_index = texture_index
 	for i in range (textures.size()):
 		new_object.textures.append(textures[i])
 	return new_object
@@ -51,17 +48,10 @@ func read(_path : String) -> void:
 	icon = dir
 	var _icon = file.get_value("graphics", "icon")
 	icon += "/%s" % _icon
-	var texture_str = file.get_value("graphics", "texture", _icon)
-	texture_index = texture_str.count(",") + 1
-	for i in range(texture_index):
-		textures.append(dir) 
-		var index = texture_str.find(",")
-		var texture_name
-		if index != -1:
-			texture_name = texture_str.substr(0, index)
-		else:
-			texture_name = texture_str
-		textures[i] += "/%s" % texture_name
+	var texture_arr = file.get_value("graphics", "texture", _icon).split(",")
+	for txtr in texture_arr:
+		var texture_path = dir + "/%s" % txtr
+		textures.append(texture_path)
 		
 func parse_id(_string) ->void:
 	id = _string

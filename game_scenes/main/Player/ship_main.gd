@@ -4,7 +4,7 @@ class_name ShipClass
 
 signal attack_sig(_target_position)
 signal rotate_weapon(_target_position, _rotation)
-var weapon_scene = load("res://game_scenes/object/weapon.tscn")
+const weapon_scene = preload("res://game_scenes/object/weapon.tscn")
 
 @export var max_speed = 300
 @export var speed = 0.0
@@ -28,15 +28,15 @@ func add_hull(_obj):
 	update_slot_weapons()
 
 func destr():
-	for i in range (hull.texture_index):
+	for i in range (hull.textures.size()):
 		var hull_sprite = "hull_sprite_%d" % i
 		var children = $Ship.get_node(hull_sprite).get_children()
 		for child in children:
 			child.free()
 		$Ship.get_node(hull_sprite).free()
-
+	
 func load_ship_textures():
-	for i in range (hull.texture_index):
+	for i in range (hull.textures.size()):
 		var hull_sprite = Sprite2D.new()
 		hull_sprite.texture = ResourceLoader.load(hull.textures[i])
 		hull_sprite.name = "hull_sprite_%d" % i
@@ -49,14 +49,16 @@ func load_ship_textures():
 func update_slot_weapons():
 	var weapons = Inventory.get_node("weapons")
 	var i: int = 0
-	var weapon_grid_load = load("res://game_scenes/inventory/weapon_grid.tscn")
+	const weapon_grid_load = preload("res://game_scenes/inventory/weapon_grid.tscn")
 	var last_type = ""
 	var children = weapons.get_children()
 	var inventory_grid = Inventory.get_node("inventory_grid")
+	var saved_weapons: Array
 	for child in children:
 		for j in range(0, child.ARRAY_WIDTH):
 			var slot = child.get_node("slot_%d_%d" % [0, j])
-			inventory_grid.add_to_inventory(slot.object)
+			if slot.object.id != "":
+				saved_weapons.append(slot.object)
 		child.destr()
 		child.free()
 	var slot_quantity = count_all_slots()
@@ -83,14 +85,31 @@ func update_slot_weapons():
 		attack_sig.connect(weapon._on_shoot)
 		rotate_weapon.connect(weapon._on_rotate)
 		weapon.type = last_type
+		weapon.slot = hull.weapons_list[i].slot
 		var hull_sprite_name = "hull_sprite_%d" % hull.weapons_list[i].floor
 		var hull_sprite = $Ship.get_node(hull_sprite_name)
+		for sctr in hull.weapons_list[i].rotation_sector:
+			weapon.rotation_sector.append(sctr)
+		for sctr in hull.weapons_list[i].fire_sector:
+			weapon.fire_sector.append(sctr)
 		hull_sprite.add_child(weapon)
 		var slot = "slot_%d_%d" % [0, hull.weapons_list[i].slot]
 		weapon_grid.get_node(slot).slot_object_size = hull.weapons_list[i].size
 		weapon_grid.get_node(slot).object_changed()
 		weapon_grid.object_changed.connect(hull_sprite.get_node("weapon_%d" % i).add_weapon)
 		i += 1
+	i = 0
+	for wpn in weapons.get_children():
+		while i < wpn.ARRAY_WIDTH:
+			var slot = "slot_%d_%d" % [0, i]
+			for j in range(saved_weapons.size()):
+				if saved_weapons[j].size_type == wpn.get_node(slot).slot_object_size:
+					wpn.add_object_to_slot(0, i, saved_weapons[j])
+					saved_weapons.remove_at(j)
+					break
+			i += 1
+	for wpn in saved_weapons:
+		inventory_grid.add_to_inventory(wpn)
 
 func count_type_slots(_last_type):
 	var i = 0
@@ -125,14 +144,14 @@ func movement(delta):
 	elif speed > target_speed:
 		speed = max(speed - acceleration * delta, target_speed)
 	rotation += rotation_direction * rotation_speed * delta
-	velocity =  transform.y * speed
+	velocity = transform.y * speed
 	move_and_slide()
 
 func attack(_target_position):
-	attack_sig.emit(_target_position)
+	attack_sig.emit(_target_position, position, rotation)
 
-func weapon_rotation(_target_position):
-	rotate_weapon.emit(_target_position)
+func weapon_rotation(_target_position, _position, _rotation):
+	rotate_weapon.emit(_target_position, _position, _rotation)
 
 func _physics_process(delta):
 	movement(delta)

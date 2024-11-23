@@ -1,9 +1,8 @@
 extends Sprite2D
 
-var shader
+const shader = preload("res://game_scenes/object/base.gdshader")
 
 func _ready():
-	shader = load("res://game_scenes/object/base.gdshader")
 	material = null
 
 func enable_shader():

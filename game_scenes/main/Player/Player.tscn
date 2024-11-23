@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://dqx2yr2vywn2b"]
 
-[ext_resource type="Script" path="res://game_scenes/main/Player/Player.gd" id="1_esiaf"]
-[ext_resource type="Script" path="res://game_scenes/main/Player/Camera2D.gd" id="3_d4cra"]
-[ext_resource type="Script" path="res://game_scenes/main/Player/ParallaxLayer.gd" id="4_en1g8"]
+[ext_resource type="Script" path="res://game_scenes/main/player/Player.gd" id="1_esiaf"]
+[ext_resource type="Script" path="res://game_scenes/main/player/Camera2D.gd" id="3_d4cra"]
+[ext_resource type="Script" path="res://game_scenes/main/player/ParallaxLayer.gd" id="4_en1g8"]
 [ext_resource type="Texture2D" uid="uid://cpypf0a2je3dy" path="res://textures/white_pixel.png" id="5_10f8u"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ryrhp"]

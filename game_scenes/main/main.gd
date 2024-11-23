@@ -3,7 +3,7 @@ extends Node2D
 var is_on_hull_area = false
 
 @onready var Player = $Player
-var object_scene = load("res://game_scenes/object/object.tscn")
+const object_scene = preload("res://game_scenes/object/object.tscn")
 
 func _ready():
 	Inventory.add_object_to_world.connect(_on_add_object_to_world)
@@ -40,15 +40,6 @@ func _on_remove_object_from_world(_slot_array):
 	Inventory.get_node("selected_slot").add_object(inventory_object.object, inventory_object.quantity)
 	Inventory.selection = true
 	inventory_object.free()
-		
-func _is_on_hull_area(_mouse_position):
-	var radius = 70 / $Player/Camera2D.zoom.x
-	var axis1 = pow(Player.position.x - _mouse_position.x , 2)
-	var axis2 = pow(Player.position.y - _mouse_position.y , 2)
-	var length_between_points = sqrt(axis1 + axis2)
-	if length_between_points <= radius:
-		return true
-	return false
 	
 func _input(event: InputEvent) -> void:
 	mouse_click(event)
@@ -79,7 +70,6 @@ func take_the_hull():
 	if !Inventory.visible || Player.hull.id == "sh_boat":
 		return
 	if has_node("inventory_object") && get_node("inventory_object").object.id == Player.hull.id:
-		#get_node("inventory_object").add_object(get_node("inventory_object").object)
 		var hull_equip_slot = Inventory.get_node("ship_slots_equip_hull")
 		hull_equip_slot.add_object_to_slot(0, 0, get_node("inventory_object").object, -1)
 	elif !has_node("inventory_object"):
@@ -91,8 +81,7 @@ func take_the_hull():
 		var hull_equip_slot = Inventory.get_node("ship_slots_equip_hull")
 		hull_equip_slot.add_object_to_slot(0, 0, Player.hull.get_object(), -1)
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-		
-		
+	
 func _on_inventory_closed():
 	if has_node("inventory_object"):
 		var inventory_grid = Inventory.get_node("inventory_grid")
@@ -104,8 +93,8 @@ func _on_inventory_closed():
 func _process(delta: float) -> void:
 	var padding = Vector2(get_viewport().size.x / 2 , get_viewport().size.y / 2)
 	var zoom = $Player/Camera2D.zoom
-	var mouse_position = get_viewport().get_mouse_position() / zoom - padding / zoom + $Player.position 
-	is_on_hull_area = _is_on_hull_area(mouse_position)
+	var mouse_position = get_viewport().get_mouse_position() / zoom - padding / zoom + Player.position 
+	is_on_hull_area = Player._is_on_hull_area(mouse_position)
 	if has_node("inventory_object"):
 		var inventory_object = get_node("inventory_object")
 		inventory_object.position = mouse_position

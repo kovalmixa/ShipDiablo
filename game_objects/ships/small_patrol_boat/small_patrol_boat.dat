@@ -9,15 +9,18 @@ slot = 0
 size = "s"
 x = -10
 y = 10
+rotation_sector = "-150,25"
 [weapon_1]
 type = "turret"
 slot = 0
 size = "s"
 x = 10
 y = 10
+rotation_sector = "-25,150"
 [weapon_2]
 type = "torpedo"
 slot = 0
 size = "XXXL"
 x = 0
 y = 0
+rotation_sector = "-90,90"
