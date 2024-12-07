@@ -7,11 +7,11 @@ var last_viewport_position2 = Vector2(0,0)
 
 func _ready() -> void:
 	super()
-	Inventory.inventory_opened.connect(_on_inventory_opened)
-	Inventory.inventory_closed.connect(_on_inventory_closed)
+	UI.inventory_opened.connect(_on_inventory_opened)
+	UI.inventory_closed.connect(_on_inventory_closed)
 
 func mouse_viewport():
-	var selection = Inventory.selection
+	var selection = UI.Inventory.selection
 	if is_visible:
 		var mouse_position = get_viewport().get_mouse_position()
 		is_on_array_grid = _is_on_array_grid(mouse_position)
@@ -22,8 +22,8 @@ func mouse_viewport():
 			if ARRAY_WIDTH == 1 && ARRAY_HEIGHT == 1:
 				get_node("base%d_%d" % [i, j]).enable_shader()
 			elif last_viewport_position.y != i || last_viewport_position.x != j:
-				if selection && Inventory.has_node("selected_slot"):
-					var size = Inventory.get_node("selected_slot").object.size
+				if selection && UI.Inventory.has_node("selected_slot"):
+					var size = UI.Inventory.get_node("selected_slot").object.size
 					disable_slot_shaders(last_viewport_position.y, last_viewport_position.x, size)
 					enable_slot_shaders(i, j, size)
 				else:
@@ -50,7 +50,7 @@ func mouse_viewport():
 		last_viewport_position = viewport_position
 
 func enable_slot_shaders(_i, _j, _size):
-	var selection = Inventory.selection
+	var selection = UI.Inventory.selection
 	var slot = "slot_%d_%d" % [_i, _j]
 	if get_node(slot).is_sub_slot && !selection:
 		_i = get_node(slot).i
@@ -63,7 +63,7 @@ func enable_slot_shaders(_i, _j, _size):
 				get_node("base%d_%d" % [i, j]).enable_shader()
 				
 func disable_slot_shaders(_i, _j, _size):
-	var selection = Inventory.selection
+	var selection = UI.Inventory.selection
 	var slot = "slot_%d_%d" % [_i, _j]
 	if get_node(slot).is_sub_slot && !selection:
 		_i = get_node(slot).i
@@ -76,8 +76,8 @@ func disable_slot_shaders(_i, _j, _size):
 				get_node("base%d_%d" % [i, j]).disable_shader()
 
 func mouse_click(event: InputEvent) -> void:
-	var selection = Inventory.selection
-	if !Inventory.visible:
+	var selection = UI.Inventory.selection
+	if !UI.Inventory.visible:
 		return
 	if event is InputEventMouseButton:
 		if is_on_array_grid && event.pressed:
@@ -96,35 +96,35 @@ func mouse_click(event: InputEvent) -> void:
 				selection = !selection
 				if selection:
 					Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-				Inventory.selection = selection
+				UI.Inventory.selection = selection
 				select_inventory_slot(i, j, quantity)
 			elif selection && event.button_index == MOUSE_BUTTON_RIGHT:
-				if Inventory.has_node("selected_slot"):
-					if can_add_to_slot(i, j, Inventory.get_node("selected_slot").object):
-						add_object_to_slot(i, j, Inventory.get_node("selected_slot").object, 1)
-						Inventory.get_node("selected_slot").add_object(Inventory.get_node("selected_slot").object, -1)
-						if Inventory.get_node("selected_slot").quantity == 0:
-							Inventory.get_node("selected_slot").free()
-							Inventory.selection = false
+				if UI.Inventory.has_node("selected_slot"):
+					if can_add_to_slot(i, j, UI.Inventory.get_node("selected_slot").object):
+						add_object_to_slot(i, j, UI.Inventory.get_node("selected_slot").object, 1)
+						UI.Inventory.get_node("selected_slot").add_object(UI.Inventory.get_node("selected_slot").object, -1)
+						if UI.Inventory.get_node("selected_slot").quantity == 0:
+							UI.Inventory.get_node("selected_slot").free()
+							UI.Inventory.selection = false
 							Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 											
 func left_click(_i, _j):
-	var selection = Inventory.selection
+	var selection = UI.Inventory.selection
 	if !selection && get_node("slot_%d_%d" % [_i, _j]).object.id == "":
 		return
 	var quantity = 1
 	selection = !selection
-	Inventory.selection = selection
+	UI.Inventory.selection = selection
 	if selection:
 		select_inventory_slot(_i, _j, quantity)
-	elif Inventory.has_node("selected_slot"):
-		if can_add_to_slot(_i, _j, Inventory.get_node("selected_slot").object):
-			var selected_slot = Inventory.get_node("selected_slot")
+	elif UI.Inventory.has_node("selected_slot"):
+		if can_add_to_slot(_i, _j, UI.Inventory.get_node("selected_slot").object):
+			var selected_slot = UI.Inventory.get_node("selected_slot")
 			add_object_to_slot(_i, _j, selected_slot.object, selected_slot.quantity)
-			Inventory.get_node("selected_slot").free()
+			UI.Inventory.get_node("selected_slot").free()
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
-			Inventory.selection = true
+			UI.Inventory.selection = true
 						
 func select_inventory_slot(_i, _j, _quantity):
 	var slot = "slot_%d_%d" % [_i, _j]
@@ -139,8 +139,8 @@ func select_inventory_slot(_i, _j, _quantity):
 		selected_slot.slot_size = Vector2(34, 34)
 		selected_slot.is_selection_slot = true
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-		Inventory.add_child(selected_slot)
-		Inventory.get_node("selected_slot").add_object(get_node(slot).object, floor(get_node(slot).quantity * _quantity))
+		UI.Inventory.add_child(selected_slot)
+		UI.Inventory.get_node("selected_slot").add_object(get_node(slot).object, floor(get_node(slot).quantity * _quantity))
 		add_object_to_slot(_i, _j, get_node(slot).object, -floor(get_node(slot).quantity * _quantity))
 		disable_slot_shaders(_i, _j, size)
 			
@@ -167,11 +167,11 @@ func _on_inventory_closed():
 	is_visible = false
 
 func slot_selection_proc():
-	var selection = Inventory.selection
-	if !Inventory.visible:
+	var selection = UI.Inventory.selection
+	if !UI.Inventory.visible:
 		return
-	if selection && Inventory.has_node("selected_slot"):
-		var selected_slot = Inventory.get_node("selected_slot")
+	if selection && UI.Inventory.has_node("selected_slot"):
+		var selected_slot = UI.Inventory.get_node("selected_slot")
 		var mouse_position = get_viewport().get_mouse_position()
 		selected_slot.position = mouse_position
 		selected_slot.slot_object_appereance(mouse_position)

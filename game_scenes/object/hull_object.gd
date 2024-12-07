@@ -28,12 +28,11 @@ func clone():
 	new_object.size_type = size_type
 	new_object.name = name
 	new_object.size = size
+	new_object.is_placable = is_placable
 	new_object.dir = dir
 	new_object.icon = icon
-	for i in range (textures.size()):
-		new_object.textures.append(textures[i])
-	for i in range (weapons_list.size()):
-		new_object.weapons_list.append(weapons_list[i])
+	new_object.weapons_list = weapons_list.duplicate()
+	new_object.textures = textures.duplicate()
 	return new_object
 
 func read(_path : String) -> void:

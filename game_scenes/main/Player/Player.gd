@@ -27,9 +27,10 @@ func movement_control():
 func attack_control(event):
 	if event is InputEventMouseButton:
 		var mouse_position = get_viewport().get_mouse_position()
-		if !Inventory.is_on_inventory_UI && event.pressed && !_is_on_hull_area(mouse_position):
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				attack(get_global_mouse_position())
+		if !UI.is_on_UI && !UI.Inventory.selection && !UI.Inventory.has_placed_obj:
+			if event.pressed && !_is_on_hull_area(mouse_position):
+				if event.button_index == MOUSE_BUTTON_LEFT:
+					attack(get_global_mouse_position())
 		
 func _input(event: InputEvent) -> void:
 	movement_control()

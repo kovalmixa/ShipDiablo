@@ -17,8 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameUi="*res://game_scenes/game_UI/game_UI.tscn"
-Inventory="*res://game_scenes/inventory/inventory.tscn"
+UI="*res://game_scenes/UI/UI.tscn"
 
 [display]
 

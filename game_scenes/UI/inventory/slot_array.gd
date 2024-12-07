@@ -123,6 +123,7 @@ func mouse_click(event):
 func _is_on_array_grid(_mouse_position):
 	if _mouse_position.x > array_top_corner.x && _mouse_position.x < array_low_corner.x:
 		if _mouse_position.y > array_top_corner.y && _mouse_position.y < array_low_corner.y:
+			UI.is_on_UI = true
 			return true
 	return false
 

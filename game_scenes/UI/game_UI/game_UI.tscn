@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cpm6w77uvpe20"]
 
-[ext_resource type="Script" path="res://game_scenes/game_UI/game_UI.gd" id="1_8im5w"]
-[ext_resource type="Script" path="res://game_scenes/game_UI/ability_list.gd" id="2_xtooa"]
-[ext_resource type="Script" path="res://game_scenes/game_UI/ability_mouse.gd" id="3_g6yya"]
+[ext_resource type="Script" path="res://game_scenes/UI/game_UI/game_UI.gd" id="1_8im5w"]
+[ext_resource type="Script" path="res://game_scenes/UI/game_UI/ability_list.gd" id="2_xtooa"]
+[ext_resource type="Script" path="res://game_scenes/UI/game_UI/ability_mouse.gd" id="3_g6yya"]
 
 [node name="Game_UI" type="CanvasLayer"]
 script = ExtResource("1_8im5w")

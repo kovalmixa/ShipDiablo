@@ -6,6 +6,7 @@ var id: String
 var type: String
 var size_type: String
 var size: Vector2
+var is_placable: bool
 
 var dir: String
 var icon: String
@@ -16,6 +17,7 @@ func _init()-> void:
 	type = ""
 	size_type = ""
 	size = Vector2(1, 1)
+	is_placable = false
 
 	dir = ""
 	icon = ""
@@ -28,10 +30,10 @@ func clone():
 	new_object.size_type = size_type
 	new_object.name = name
 	new_object.size = size
+	new_object.is_placable = is_placable
 	new_object.dir = dir
 	new_object.icon = icon
-	for i in range (textures.size()):
-		new_object.textures.append(textures[i])
+	new_object.textures = textures.duplicate()
 	return new_object
 	
 func read(_path : String) -> void:
@@ -59,16 +61,14 @@ func parse_id(_string) ->void:
 	if _string.find("sh") == 0:
 		dir += "/ships"
 		type = "hull"
+		is_placable = true
 		_string = _string.substr(3, _string.length() - 3)
 	elif _string.find("t") == 0:
 		dir += "/turrets"
 		type = "turret"
+		is_placable = false
 		_string = _string.substr(2, _string.length() - 2)
 	dir += "/%s" % _string
 	var file_dir = dir
 	file_dir += "/%s" % _string
 	read(file_dir)
-
-func get_object():
-	var object = clone()
-	return object

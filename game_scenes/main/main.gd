@@ -6,9 +6,9 @@ var is_on_hull_area = false
 const object_scene = preload("res://game_scenes/object/object.tscn")
 
 func _ready():
-	Inventory.add_object_to_world.connect(_on_add_object_to_world)
-	Inventory.remove_object_from_world.connect(_on_remove_object_from_world)
-	Inventory.inventory_closed.connect(_on_inventory_closed)
+	UI.Inventory.add_object_to_world.connect(_on_add_object_to_world)
+	UI.Inventory.remove_object_from_world.connect(_on_remove_object_from_world)
+	UI.inventory_closed.connect(_on_inventory_closed)
 		
 func inventory_obj_init():
 	var inventory_object = object_scene.instantiate()
@@ -25,8 +25,9 @@ func _on_add_object_to_world(_obj):
 	get_node("inventory_object").scale = Vector2(5,5)
 	var sprite = get_node("inventory_object").get_node("Sprite2D")
 	sprite.offset -= Vector2(0, sprite.texture.get_height() / 4)
-	Inventory.get_node("selected_slot").free()
-	Inventory.selection = false
+	UI.Inventory.get_node("selected_slot").free()
+	UI.Inventory.selection = false
+	UI.Inventory.has_placed_obj = true
 	
 func _on_remove_object_from_world(_slot_array):
 	if !has_node("inventory_object"):
@@ -36,9 +37,10 @@ func _on_remove_object_from_world(_slot_array):
 	selected_slot.slot_size = Vector2(34, 34)
 	selected_slot.is_selection_slot = true
 	var inventory_object = get_node("inventory_object")
-	Inventory.add_child(selected_slot)
-	Inventory.get_node("selected_slot").add_object(inventory_object.object, inventory_object.quantity)
-	Inventory.selection = true
+	UI.Inventory.add_child(selected_slot)
+	UI.Inventory.get_node("selected_slot").add_object(inventory_object.object, inventory_object.quantity)
+	UI.Inventory.selection = true
+	UI.Inventory.has_placed_obj = false
 	inventory_object.free()
 	
 func _input(event: InputEvent) -> void:
@@ -58,8 +60,8 @@ func place_the_hull():
 		return
 	$inventory_object/Sprite2D.self_modulate = Color(1, 1, 1)
 	if Player.hull.id != get_node("inventory_object").object.id && Player.hull.id != "sh_boat":
-		Inventory.get_node("Inventory_grid").add_to_inventory(Player.hull.id, 1)
-	var hull_equip_slot = Inventory.get_node("ship_slots_equip_hull")
+		UI.Inventory.get_node("Inventory_grid").add_to_inventory(Player.hull.id, 1)
+	var hull_equip_slot = UI.Inventory.get_node("ship_slots_equip_hull")
 	hull_equip_slot.add_object_to_slot(0, 0, get_node("inventory_object").object)
 	get_node("inventory_object").add_object(get_node("inventory_object").object.id, -1)
 	if get_node("inventory_object").object.id == "":
@@ -67,10 +69,10 @@ func place_the_hull():
 		get_node("inventory_object").free()
 	
 func take_the_hull():
-	if !Inventory.visible || Player.hull.id == "sh_boat":
+	if !UI.Inventory.visible || Player.hull.id == "sh_boat":
 		return
 	if has_node("inventory_object") && get_node("inventory_object").object.id == Player.hull.id:
-		var hull_equip_slot = Inventory.get_node("ship_slots_equip_hull")
+		var hull_equip_slot = UI.Inventory.get_node("ship_slots_equip_hull")
 		hull_equip_slot.add_object_to_slot(0, 0, get_node("inventory_object").object, -1)
 	elif !has_node("inventory_object"):
 		inventory_obj_init()
@@ -78,13 +80,13 @@ func take_the_hull():
 		get_node("inventory_object").scale = Vector2(5,5)
 		var sprite = get_node("inventory_object").get_node("Sprite2D")
 		sprite.offset -= Vector2(0, sprite.texture.get_height() / 4)
-		var hull_equip_slot = Inventory.get_node("ship_slots_equip_hull")
-		hull_equip_slot.add_object_to_slot(0, 0, Player.hull.get_object(), -1)
+		var hull_equip_slot = UI.Inventory.get_node("ship_slots_equip_hull")
+		hull_equip_slot.add_object_to_slot(0, 0, Player.hull.clone(), -1)
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	
 func _on_inventory_closed():
 	if has_node("inventory_object"):
-		var inventory_grid = Inventory.get_node("inventory_grid")
+		var inventory_grid = UI.Inventory.get_node("inventory_grid")
 		var inventory_object = get_node("inventory_object")
 		inventory_grid.add_to_inventory(inventory_object.object.id, inventory_object.quantity)
 		inventory_object.free()

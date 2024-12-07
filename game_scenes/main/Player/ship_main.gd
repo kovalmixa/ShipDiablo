@@ -47,12 +47,12 @@ func load_ship_textures():
 		$CollisionShape2D.shape.radius = sprite2.texture.get_width()
 
 func update_slot_weapons():
-	var weapons = Inventory.get_node("weapons")
+	var weapons = UI.Inventory.get_node("weapons")
 	var i: int = 0
-	const weapon_grid_load = preload("res://game_scenes/inventory/weapon_grid.tscn")
+	const weapon_grid_load = preload("res://game_scenes/UI/inventory/ship_slots_equip.tscn")
 	var last_type = ""
 	var children = weapons.get_children()
-	var inventory_grid = Inventory.get_node("inventory_grid")
+	var inventory_grid = UI.Inventory.get_node("inventory_grid")
 	var saved_weapons: Array
 	for child in children:
 		for j in range(0, child.ARRAY_WIDTH):
