@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpwt2x7d0lshb"]
-
-[ext_resource type="Script" path="res://game_scenes/UI/inventory/ship_slots_equip.gd" id="1_rvus7"]
-
-[node name="ship_slots_equip" type="Node2D"]
-script = ExtResource("1_rvus7")

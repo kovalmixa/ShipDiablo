@@ -1,11 +1,12 @@
 extends CharacterBody2D
 
-class_name ShipClass
+class_name Entity
 
 signal attack_sig(_target_position)
 signal rotate_weapon(_target_position, _rotation)
 const weapon_scene = preload("res://game_scenes/object/weapon.tscn")
 
+@export var type: String
 @export var max_speed = 300
 @export var speed = 0.0
 @export var speed_level = 0
@@ -13,9 +14,19 @@ const weapon_scene = preload("res://game_scenes/object/weapon.tscn")
 @export var rotation_speed = 1.025
 @export var rotation_direction = 0
 var hull
+var is_player
 
 func _ready() -> void:
 	hull = HullObject.new()
+	
+func setup(_type: String, _is_player: bool) -> void:
+	type = _type
+	is_player = _is_player
+	add_hull(get_default())
+	var hull_sprite = $Vehicle.get_node("hull_sprite_0")
+	$CollisionShape2D.scale = Vector2(2,2)
+	$CollisionShape2D.shape.height = hull_sprite.texture.get_height()
+	$CollisionShape2D.shape.radius = hull_sprite.texture.get_width()
 
 func add_hull(_obj):
 	destr()
@@ -24,32 +35,33 @@ func add_hull(_obj):
 	else:
 		hull._init()
 		hull.parse_id(_obj)
-	load_ship_textures()
-	update_slot_weapons()
+	load_textures()
+	if is_player && UI.Inventory:
+		update_slot_weapons()
 
 func destr():
 	for i in range (hull.textures.size()):
 		var hull_sprite = "hull_sprite_%d" % i
-		var children = $Ship.get_node(hull_sprite).get_children()
+		var children = $Vehicle.get_node(hull_sprite).get_children()
 		for child in children:
 			child.free()
-		$Ship.get_node(hull_sprite).free()
+		$Vehicle.get_node(hull_sprite).free()
 	
-func load_ship_textures():
+func load_textures():
 	for i in range (hull.textures.size()):
 		var hull_sprite = Sprite2D.new()
 		hull_sprite.texture = ResourceLoader.load(hull.textures[i])
 		hull_sprite.name = "hull_sprite_%d" % i
 		hull_sprite.scale = Vector2(5,5)
-		$Ship.add_child(hull_sprite)
-		var sprite2 = $Ship.get_node("hull_sprite_%d" % i)
+		$Vehicle.add_child(hull_sprite)
+		var sprite2 = $Vehicle.get_node("hull_sprite_%d" % i)
 		$CollisionShape2D.shape.height = sprite2.texture.get_height()
 		$CollisionShape2D.shape.radius = sprite2.texture.get_width()
 
 func update_slot_weapons():
 	var weapons = UI.Inventory.get_node("weapons")
 	var i: int = 0
-	const weapon_grid_load = preload("res://game_scenes/UI/inventory/ship_slots_equip.tscn")
+	const weapon_grid_load = preload("res://game_scenes/UI/inventory/slots_equip.tscn")
 	var last_type = ""
 	var children = weapons.get_children()
 	var inventory_grid = UI.Inventory.get_node("inventory_grid")
@@ -87,7 +99,7 @@ func update_slot_weapons():
 		weapon.type = last_type
 		weapon.slot = hull.weapons_list[i].slot
 		var hull_sprite_name = "hull_sprite_%d" % hull.weapons_list[i].floor
-		var hull_sprite = $Ship.get_node(hull_sprite_name)
+		var hull_sprite = $Vehicle.get_node(hull_sprite_name)
 		for sctr in hull.weapons_list[i].rotation_sector:
 			weapon.rotation_sector.append(sctr)
 		for sctr in hull.weapons_list[i].fire_sector:
@@ -133,10 +145,23 @@ func count_all_slots():
 func _on_object_changed(_j, _obj, _slot_type):
 	if _slot_type == "hull":
 		if !_obj:
-			add_hull("sh_boat")
+			add_hull(get_default())
 		else:
 			add_hull(_obj)
 
+func get_default() -> String:
+	if type == "ship":
+		return "sh_boat"
+	return ""
+	
+func _is_on_hull_area(_position: Vector2) -> bool:
+	var shape = $CollisionShape2D.shape
+	var a = shape.radius
+	var b = shape.height / 2
+	var x = _position.x
+	var y = _position.y
+	return (x * x) / (a * a) + (y * y) / (b * b) <= 1
+	
 func movement(delta):
 	var target_speed = speed_level * -max_speed / 3
 	if speed < target_speed:
@@ -150,8 +175,5 @@ func movement(delta):
 func attack(_target_position):
 	attack_sig.emit(_target_position, position, rotation)
 
-func weapon_rotation(_target_position, _position, _rotation):
-	rotate_weapon.emit(_target_position, _position, _rotation)
-
-func _physics_process(delta):
-	movement(delta)
+func weapon_rotation(_target_position):
+	rotate_weapon.emit(_target_position, position, rotation)

@@ -1,0 +1,2 @@
+Entity architecture fixes
+Added ntity classes for controlling by AI or player

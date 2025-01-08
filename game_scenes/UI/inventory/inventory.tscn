@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dk1o3w1mtsde1"]
 
 [ext_resource type="Script" path="res://game_scenes/UI/inventory/Inventory.gd" id="1_q7eyw"]
-[ext_resource type="Script" path="res://game_scenes/UI/inventory/ship_slots_equip.gd" id="2_vw1to"]
+[ext_resource type="Script" path="res://game_scenes/UI/inventory/slots_equip.gd" id="2_vw1to"]
 [ext_resource type="Script" path="res://game_scenes/UI/inventory/Inventory_grid.gd" id="3_65fq6"]
 
 [node name="Inventory" type="CanvasLayer"]
