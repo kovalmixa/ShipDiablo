@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var entity = $Entity
-@export var type = "" # : String
+@export var type = ""
 
 func _ready():
 	entity.setup(type, true)

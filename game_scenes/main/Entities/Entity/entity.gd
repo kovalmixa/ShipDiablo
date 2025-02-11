@@ -27,6 +27,9 @@ func setup(_type: String, _is_player: bool) -> void:
 	$CollisionShape2D.scale = Vector2(2,2)
 	$CollisionShape2D.shape.height = hull_sprite.texture.get_height()
 	$CollisionShape2D.shape.radius = hull_sprite.texture.get_width()
+	
+	if is_player:
+		UI.Inventory.hull_equip.object_changed.connect(_on_object_changed)
 
 func add_hull(_obj):
 	destr()

@@ -11,8 +11,6 @@ func _ready() -> void:
 	super()
 	main = get_tree().root.get_node("Main")
 	player = main.get_node("Player")
-	if player.entity != null:
-		object_changed.connect(player.entity._on_object_changed)
 	
 func draw_objects() -> void:
 	super()

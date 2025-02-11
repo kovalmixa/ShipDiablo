@@ -8,10 +8,12 @@ var is_on_UI = false
 var has_placed_obj = false
 var on_slot_array = ""
 var children
+var hull_equip
 		
 func _ready() -> void:
 	
 	children = get_children()
+	hull_equip = $hull_equip
 	
 	var Inventory_grid = get_node("inventory_grid")
 	Inventory_grid.add_to_inventory("t_mg45", 12)

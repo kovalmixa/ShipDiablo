@@ -8,7 +8,7 @@
 visible = false
 script = ExtResource("1_q7eyw")
 
-[node name="ship_slots_equip_hull" type="Node2D" parent="."]
+[node name="hull_equip" type="Node2D" parent="."]
 position = Vector2(400, 300)
 script = ExtResource("2_vw1to")
 type = "hull"

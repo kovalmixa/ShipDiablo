@@ -62,7 +62,7 @@ func place_the_hull():
 	$inventory_object/Sprite2D.self_modulate = Color(1, 1, 1)
 	if hull.id != get_node("inventory_object").object.id && hull.id != "sh_boat":
 		UI.Inventory.get_node("Inventory_grid").add_to_inventory(hull.id, 1)
-	var hull_equip_slot = UI.Inventory.get_node("ship_slots_equip_hull")
+	var hull_equip_slot = UI.Inventory.hull_equip
 	hull_equip_slot.add_object_to_slot(0, 0, get_node("inventory_object").object)
 	get_node("inventory_object").add_object(get_node("inventory_object").object.id, -1)
 	if get_node("inventory_object").object.id == "":
@@ -82,7 +82,7 @@ func take_the_hull():
 		get_node("inventory_object").scale = Vector2(5,5)
 		var sprite = get_node("inventory_object").get_node("Sprite2D")
 		sprite.offset -= Vector2(0, sprite.texture.get_height() / 4)
-		var hull_equip_slot = UI.Inventory.get_node("ship_slots_equip_hull")
+		var hull_equip_slot = UI.Inventory.hull_equip
 		hull_equip_slot.add_object_to_slot(0, 0, hull.clone(), -1)
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	
