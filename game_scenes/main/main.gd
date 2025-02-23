@@ -62,13 +62,15 @@ func place_the_hull():
 	$inventory_object/Sprite2D.self_modulate = Color(1, 1, 1)
 	if hull.id != get_node("inventory_object").object.id && hull.id != "sh_boat":
 		UI.Inventory.get_node("Inventory_grid").add_to_inventory(hull.id, 1)
+		UI.Inventory.has_placed_obj = false
 	var hull_equip_slot = UI.Inventory.hull_equip
 	hull_equip_slot.add_object_to_slot(0, 0, get_node("inventory_object").object)
 	get_node("inventory_object").add_object(get_node("inventory_object").object.id, -1)
 	if get_node("inventory_object").object.id == "":
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_node("inventory_object").free()
-	
+		UI.Inventory.has_placed_obj = false
+		
 func take_the_hull():
 	var hull = Player.entity.hull
 	if !UI.Inventory.visible || hull.id == "sh_boat":
