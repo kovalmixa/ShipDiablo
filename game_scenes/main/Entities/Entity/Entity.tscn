@@ -1,9 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqx2yr2vywn2b"]
+[gd_scene load_steps=3 format=3 uid="uid://dqx2yr2vywn2b"]
 
 [ext_resource type="Script" path="res://game_scenes/main/Entities/Entity/entity.gd" id="2_4pnwa"]
-[ext_resource type="Script" path="res://game_scenes/main/Entities/Entity/Camera2D.gd" id="2_vlod2"]
-[ext_resource type="Script" path="res://game_scenes/main/Entities/Entity/ParallaxLayer.gd" id="3_xppg7"]
-[ext_resource type="Texture2D" uid="uid://cpypf0a2je3dy" path="res://textures/white_pixel.png" id="5_10f8u"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ryrhp"]
 radius = 6.0
@@ -16,18 +13,3 @@ script = ExtResource("2_4pnwa")
 shape = SubResource("CapsuleShape2D_ryrhp")
 
 [node name="Vehicle" type="Node2D" parent="."]
-
-[node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource("2_vlod2")
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-scale = Vector2(50, 50)
-motion_mirroring = Vector2(256, 256)
-script = ExtResource("3_xppg7")
-
-[node name="Water" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-modulate = Color(0.00784314, 0.941176, 0.992157, 1)
-scale = Vector2(256, 256)
-texture = ExtResource("5_10f8u")

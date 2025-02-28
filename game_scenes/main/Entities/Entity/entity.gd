@@ -15,6 +15,7 @@ const weapon_scene = preload("res://game_scenes/object/weapon.tscn")
 @export var rotation_direction = 0
 var hull
 var is_player
+var PlayerFeatures
 
 func _ready() -> void:
 	hull = HullObject.new()
@@ -30,6 +31,9 @@ func setup(_type: String, _is_player: bool) -> void:
 	
 	if is_player:
 		UI.Inventory.hull_equip.object_changed.connect(_on_object_changed)
+		var player_features_instance = preload("res://game_scenes/main/Entities/Player/PlayerFeatures.tscn")
+		PlayerFeatures = player_features_instance.instantiate()
+		add_child(PlayerFeatures)
 
 func add_hull(_obj):
 	destr()

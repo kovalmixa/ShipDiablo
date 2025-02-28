@@ -98,7 +98,9 @@ func _on_inventory_closed():
 	
 func _process(delta: float) -> void:
 	var padding = Vector2(get_viewport().size.x / 2 , get_viewport().size.y / 2)
-	var zoom = $Player/Entity/Camera2D.zoom
+	var PlayerFeatures = $Player.entity.PlayerFeatures
+	var Camera = PlayerFeatures.Camera
+	var zoom = Camera.zoom
 	var mouse_position = get_viewport().get_mouse_position() / zoom - padding / zoom + Player.entity.position 
 	is_on_hull_area = Player._is_on_hull_dep_area(mouse_position)
 	if has_node("inventory_object"):
