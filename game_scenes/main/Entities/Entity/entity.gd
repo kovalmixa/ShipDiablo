@@ -176,7 +176,14 @@ func movement(delta):
 	elif speed > target_speed:
 		speed = max(speed - acceleration * delta, target_speed)
 	rotation += rotation_direction * rotation_speed * delta
-	velocity = transform.y * speed
+	var motion = transform.y * speed * delta
+	var collision = move_and_collide(motion)
+	if collision:
+		var collider = collision.get_collider()
+		if collider is CharacterBody2D:
+			var push_direction = (collider.global_position - global_position).normalized()
+			collider.velocity += push_direction * target_speed / -10
+			print("Отталкиваем объект:", collider.name)
 	move_and_slide()
 
 func attack(_target_position):
