@@ -1,5 +1,7 @@
 extends Node2D
 
+signal mass_changed(_mass, _is_added, _quantity)
+
 var projectile_scene = preload("res://game_scenes/object/projectile.tscn")
 var type: String
 var slot: int
@@ -18,9 +20,11 @@ func add_weapon(_j, _obj, _slot_type) -> void:
 			weapon = _obj.clone()
 			$Sprite2D.texture = ResourceLoader.load(weapon.textures[0])
 			$Sprite2D.offset = weapon.offset
+			mass_changed.emit(weapon.mass, true)
 		else:
 			weapon._init()
 			$Sprite2D.texture = null
+			mass_changed.emit(weapon.mass, false)
 
 func _on_shoot(_target_position, _position, _rotation) -> void:
 	if weapon.id != "":

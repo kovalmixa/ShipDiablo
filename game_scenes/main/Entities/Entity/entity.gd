@@ -45,9 +45,10 @@ func add_hull(_obj):
 	load_textures()
 	if is_player && UI.Inventory:
 		update_slot_weapons()
-	calculate_mass()
+	_on_mass_changed(hull.mass, true)
 
 func destr():
+	_on_mass_changed(mass, false)
 	for i in range (hull.textures.size()):
 		var hull_sprite = "hull_sprite_%d" % i
 		var children = $Vehicle.get_node(hull_sprite).get_children()
@@ -110,9 +111,9 @@ func update_slot_weapons():
 		var slot = "slot_%d_%d" % [0, hull.weapons_list[i].slot]
 		weapon_grid.get_node(slot).slot_object_size = hull.weapons_list[i].size
 		weapon_grid.get_node(slot).object_changed()
-		weapon_object_list.append(hull_sprite.get_node("weapon_%d" % i))
-		weapon_grid.object_changed.connect(_on_object_changed)
-		weapon_grid.object_changed.connect(hull_sprite.get_node("weapon_%d" % i).add_weapon)
+		var weapon_node = hull_sprite.get_node("weapon_%d" % i)
+		weapon_grid.object_changed.connect(weapon_node.add_weapon)
+		weapon_node.mass_changed.connect(_on_mass_changed)
 		i += 1
 	i = 0
 	for wpn in weapons.get_children():
@@ -163,13 +164,12 @@ func _on_object_changed(_j, _obj, _slot_type):
 			add_hull(get_default())
 		else:
 			add_hull(_obj)
+	
+func _on_mass_changed(_mass, _is_added, _quantity = 1):
+	if(_is_added):
+		mass += _quantity * _mass
 	else:
-		calculate_mass()
-
-func calculate_mass():
-	mass = hull.mass
-	for weap in weapon_object_list:
-		mass += weap.weapon.mass
+		mass -= _quantity * _mass
 
 func get_default() -> String:
 	if type == "ship":
@@ -198,7 +198,6 @@ func movement(delta):
 		if collider is CharacterBody2D:
 			var push_direction = (collider.global_position - global_position).normalized()
 			var push_force = mass * push_direction * speed / -10
-			print("Mass: %d" % mass)
 			collider.velocity += push_force
 			collider.set_meta("is_pushed", true)
 	move_and_slide()

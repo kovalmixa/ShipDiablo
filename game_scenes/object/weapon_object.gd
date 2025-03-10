@@ -15,6 +15,12 @@ class Weapon:
 	var y: int
 	var projectile: projectileObject
 
+func _init() -> void:
+	super()
+	offset = Vector2(0,0)
+	rotation_speed = 0
+	weapon_list.clear()
+
 func clone():
 	var new_object = WeaponObject.new()
 	new_object.id = id
