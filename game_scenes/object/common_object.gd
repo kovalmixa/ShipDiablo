@@ -11,6 +11,7 @@ var is_placable: bool
 var dir: String
 var icon: String
 var textures: Array
+var mass: int
 
 func _init()-> void:
 	id = ""
@@ -34,6 +35,7 @@ func clone():
 	new_object.dir = dir
 	new_object.icon = icon
 	new_object.textures = textures.duplicate()
+	new_object.mass = mass
 	return new_object
 	
 func read(_path : String) -> void:
@@ -46,6 +48,7 @@ func read(_path : String) -> void:
 	size_type = file.get_value("general", "size_type", "")
 	var slot_width = file.get_value("general", "slot_width", 1)
 	var slot_height = file.get_value("general", "slot_height", 1)
+	mass = file.get_value("general", "mass", 1)
 	size = Vector2(slot_width, slot_height)
 	icon = dir
 	var _icon = file.get_value("graphics", "icon")

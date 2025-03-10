@@ -1,6 +1,7 @@
 [general]
 name = "mg45"
 size_type = "s"
+mass = 5
 [graphics]
 offset_x = 0
 offset_y = -5

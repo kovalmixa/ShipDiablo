@@ -21,6 +21,7 @@ func clone():
 	new_object.type = type
 	new_object.size_type = size_type
 	new_object.name = name
+	new_object.mass = mass
 	new_object.size = size
 	new_object.is_placable = is_placable
 	new_object.dir = dir

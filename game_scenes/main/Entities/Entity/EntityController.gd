@@ -54,4 +54,3 @@ func _is_on_hull_dep_area(_position) -> bool:
 
 func _process(delta: float) -> void:
 	entity.weapon_rotation(get_global_mouse_position())
-	entity.movement(delta)

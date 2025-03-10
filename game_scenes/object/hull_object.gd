@@ -33,6 +33,7 @@ func clone():
 	new_object.icon = icon
 	new_object.weapons_list = weapons_list.duplicate()
 	new_object.textures = textures.duplicate()
+	new_object.mass = mass
 	return new_object
 
 func read(_path : String) -> void:

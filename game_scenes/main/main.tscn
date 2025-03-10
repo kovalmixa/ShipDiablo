@@ -57,6 +57,8 @@ layer_0/tile_data = PackedInt32Array(-262152, 65537, 0, -262151, 65537, 0, -3276
 type = "ship"
 is_player = true
 
-[node name="EntityController" parent="." instance=ExtResource("3_34f3i")]
+[node name="Entities" type="Node" parent="."]
+
+[node name="EntityController" parent="Entities" instance=ExtResource("3_34f3i")]
 position = Vector2(574, -217)
 type = "ship"

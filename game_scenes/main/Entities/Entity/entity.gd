@@ -13,7 +13,9 @@ const weapon_scene = preload("res://game_scenes/object/weapon.tscn")
 @export var acceleration = 50.0
 @export var rotation_speed = 1.025
 @export var rotation_direction = 0
+var mass = 0
 var hull
+var weapon_object_list: Array
 var is_player
 var PlayerFeatures
 
@@ -26,8 +28,6 @@ func setup(_type: String, _is_player: bool) -> void:
 	add_hull(get_default())
 	var hull_sprite = $Vehicle.get_node("hull_sprite_0")
 	$CollisionShape2D.scale = Vector2(2,2)
-	$CollisionShape2D.shape.height = hull_sprite.texture.get_height()
-	$CollisionShape2D.shape.radius = hull_sprite.texture.get_width()
 	
 	if is_player:
 		UI.Inventory.hull_equip.object_changed.connect(_on_object_changed)
@@ -45,6 +45,7 @@ func add_hull(_obj):
 	load_textures()
 	if is_player && UI.Inventory:
 		update_slot_weapons()
+	calculate_mass()
 
 func destr():
 	for i in range (hull.textures.size()):
@@ -66,6 +67,7 @@ func load_textures():
 		$CollisionShape2D.shape.radius = sprite2.texture.get_width()
 
 func update_slot_weapons():
+	weapon_object_list.clear()
 	var weapons = UI.Inventory.get_node("weapons")
 	var i: int = 0
 	const weapon_grid_load = preload("res://game_scenes/UI/inventory/slots_equip.tscn")
@@ -85,15 +87,7 @@ func update_slot_weapons():
 		if hull.weapons_list[i].type != last_type:
 			last_type = hull.weapons_list[i].type
 			var weapon_grid = weapon_grid_load.instantiate()
-			weapon_grid.name = last_type
-			weapon_grid.position.y = weapons.position.y + i * 40 
-			weapon_grid.position.x = weapons.position.x
-			weapon_grid.WIDTH = 1.6
-			weapon_grid.HEIGHT = 1.6
-			weapon_grid.type = last_type
-			weapon_grid.ARRAY_WIDTH = count_type_slots(last_type)
-			weapon_grid.OBJECT = "WeaponObject"
-			weapon_grid.is_visible = true
+			setup_weapon_grid(weapon_grid, last_type, weapons, i);
 			weapons.add_child(weapon_grid)
 		var weapon_grid = weapons.get_node(last_type)
 		var weapon = weapon_scene.instantiate()
@@ -103,6 +97,7 @@ func update_slot_weapons():
 		weapon.name = "weapon_%d" % i
 		attack_sig.connect(weapon._on_shoot)
 		rotate_weapon.connect(weapon._on_rotate)
+		weapon_object_list.append(weapon)
 		weapon.type = last_type
 		weapon.slot = hull.weapons_list[i].slot
 		var hull_sprite_name = "hull_sprite_%d" % hull.weapons_list[i].floor
@@ -115,6 +110,8 @@ func update_slot_weapons():
 		var slot = "slot_%d_%d" % [0, hull.weapons_list[i].slot]
 		weapon_grid.get_node(slot).slot_object_size = hull.weapons_list[i].size
 		weapon_grid.get_node(slot).object_changed()
+		weapon_object_list.append(hull_sprite.get_node("weapon_%d" % i))
+		weapon_grid.object_changed.connect(_on_object_changed)
 		weapon_grid.object_changed.connect(hull_sprite.get_node("weapon_%d" % i).add_weapon)
 		i += 1
 	i = 0
@@ -129,6 +126,17 @@ func update_slot_weapons():
 			i += 1
 	for wpn in saved_weapons:
 		inventory_grid.add_to_inventory(wpn)
+
+func setup_weapon_grid(weapon_grid, last_type, weapons, i):
+	weapon_grid.name = last_type
+	weapon_grid.position.y = weapons.position.y + i * 40 
+	weapon_grid.position.x = weapons.position.x
+	weapon_grid.WIDTH = 1.6
+	weapon_grid.HEIGHT = 1.6
+	weapon_grid.type = last_type
+	weapon_grid.ARRAY_WIDTH = count_type_slots(last_type)
+	weapon_grid.OBJECT = "WeaponObject"
+	weapon_grid.is_visible = true
 
 func count_type_slots(_last_type):
 	var i = 0
@@ -155,6 +163,13 @@ func _on_object_changed(_j, _obj, _slot_type):
 			add_hull(get_default())
 		else:
 			add_hull(_obj)
+	else:
+		calculate_mass()
+
+func calculate_mass():
+	mass = hull.mass
+	for weap in weapon_object_list:
+		mass += weap.weapon.mass
 
 func get_default() -> String:
 	if type == "ship":
@@ -182,8 +197,10 @@ func movement(delta):
 		var collider = collision.get_collider()
 		if collider is CharacterBody2D:
 			var push_direction = (collider.global_position - global_position).normalized()
-			collider.velocity += push_direction * target_speed / -10
-			print("Отталкиваем объект:", collider.name)
+			var push_force = mass * push_direction * speed / -10
+			print("Mass: %d" % mass)
+			collider.velocity += push_force
+			collider.set_meta("is_pushed", true)
 	move_and_slide()
 
 func attack(_target_position):
@@ -191,3 +208,11 @@ func attack(_target_position):
 
 func weapon_rotation(_target_position):
 	rotate_weapon.emit(_target_position, position, rotation)
+
+func _physics_process(delta: float) -> void:
+	movement(delta)
+	if get_meta("is_pushed", false):
+		var damping_factor = 1 / hull.mass
+		velocity *= damping_factor 
+		if velocity.length() < 1:
+			set_meta("is_pushed", false)
